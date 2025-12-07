@@ -1,4 +1,4 @@
-# Yo FarmHub
+# Volty
 
 Android Project built using flutter framework.
 
@@ -35,3 +35,4 @@ Android Project built using flutter framework.
 
 ## THANK YOU
 . Please feel free to follow me and star my repo <3
+
