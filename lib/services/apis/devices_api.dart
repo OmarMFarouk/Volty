@@ -75,4 +75,38 @@ class DevicesApi {
       return "error $e";
     }
   }
+
+  Future<dynamic> deleteDevice(int deviceId) async {
+    try {
+      final token = await AppSecured.readString('user_token') ?? "";
+      final response = await http.post(
+        Uri.parse(AppEndPoints.deleteDevice),
+        body: {"device_id": deviceId.toString()},
+        headers: {"Authorization": "Bearer $token"},
+      );
+
+      log(response.body.toString());
+      return jsonDecode(response.body);
+    } on Exception catch (e) {
+      log("ManageRooms error: $e");
+      return "error $e";
+    }
+  }
+
+  Future<dynamic> deleteRoom(int roomId) async {
+    try {
+      final token = await AppSecured.readString('user_token') ?? "";
+      final response = await http.post(
+        Uri.parse(AppEndPoints.deleteRoom),
+        body: {"room_id": roomId.toString()},
+        headers: {"Authorization": "Bearer $token"},
+      );
+
+      log(response.body.toString());
+      return jsonDecode(response.body);
+    } on Exception catch (e) {
+      log("ManageRooms error: $e");
+      return "error $e";
+    }
+  }
 }

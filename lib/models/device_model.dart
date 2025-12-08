@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:volty/enums/devices_types.dart';
+import 'package:volty/enums/devices_types_enum.dart';
 import 'package:volty/src/app_globals.dart';
 
 class Device {

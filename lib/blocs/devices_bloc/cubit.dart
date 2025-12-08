@@ -1,6 +1,6 @@
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:volty/enums/devices_types.dart';
+import 'package:volty/enums/devices_types_enum.dart';
 import 'package:volty/services/apis/Devices_api.dart';
 import 'package:volty/src/app_globals.dart';
 import '../../models/device_model.dart';
@@ -85,7 +85,7 @@ class DevicesCubit extends Cubit<DevicesStates> {
 
   Future<void> deleteRoom({required int roomId}) async {
     emit(DevicesLoading());
-    await DevicesApi().fetchDevices().then((r) {
+    await DevicesApi().deleteRoom(roomId).then((r) {
       if (r == null || r.toString().startsWith('error')) {
         emit(DevicesError(msg: 'تحقق من الإتصال بالإنترنت'));
       } else if (r['success'] == true) {
@@ -100,7 +100,7 @@ class DevicesCubit extends Cubit<DevicesStates> {
 
   Future<void> deleteDevice({required int deviceId}) async {
     emit(DevicesLoading());
-    await DevicesApi().fetchDevices().then((r) {
+    await DevicesApi().deleteDevice(deviceId).then((r) {
       if (r == null || r.toString().startsWith('error')) {
         emit(DevicesError(msg: 'تحقق من الإتصال بالإنترنت'));
       } else if (r['success'] == true) {

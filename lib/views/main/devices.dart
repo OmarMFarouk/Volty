@@ -8,7 +8,7 @@ import 'package:volty/components/general/snackbar.dart';
 import 'package:volty/models/device_model.dart';
 import 'package:volty/src/app_globals.dart';
 
-import '../../enums/devices_types.dart';
+import '../../enums/devices_types_enum.dart';
 
 class DevicesScreen extends StatefulWidget {
   const DevicesScreen({super.key});
@@ -535,49 +535,24 @@ class _DevicesScreenState extends State<DevicesScreen> {
               ),
             ],
           ),
-          if (device.isOn) ...[
-            const SizedBox(height: 15),
-            Row(
-              children: [
-                Expanded(
-                  child: TextButton.icon(
-                    onPressed: () {
-                      // TODO: Implement scheduling
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(content: Text('ميزة الجدولة قريباً')),
-                      );
-                    },
-                    icon: Icon(Icons.schedule, size: 18),
-                    label: Text('جدولة'),
-                    style: TextButton.styleFrom(
-                      foregroundColor: Colors.grey[300],
-                      backgroundColor: const Color(0xFF2D3548),
-                      padding: const EdgeInsets.symmetric(vertical: 12),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(12),
-                      ),
-                    ),
-                  ),
+
+          const SizedBox(height: 15),
+
+          Expanded(
+            child: TextButton.icon(
+              onPressed: () => _showDeviceSettingsDialog(device, room),
+              icon: Icon(Icons.settings, size: 18),
+              label: Text('إعدادات'),
+              style: TextButton.styleFrom(
+                foregroundColor: Colors.grey[300],
+                backgroundColor: const Color(0xFF2D3548),
+                padding: const EdgeInsets.symmetric(vertical: 12),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(12),
                 ),
-                const SizedBox(width: 10),
-                Expanded(
-                  child: TextButton.icon(
-                    onPressed: () => _showDeviceSettingsDialog(device, room),
-                    icon: Icon(Icons.settings, size: 18),
-                    label: Text('إعدادات'),
-                    style: TextButton.styleFrom(
-                      foregroundColor: Colors.grey[300],
-                      backgroundColor: const Color(0xFF2D3548),
-                      padding: const EdgeInsets.symmetric(vertical: 12),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(12),
-                      ),
-                    ),
-                  ),
-                ),
-              ],
+              ),
             ),
-          ],
+          ),
         ],
       ),
     );
