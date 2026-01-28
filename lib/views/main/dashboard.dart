@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:liquid_pull_to_refresh/liquid_pull_to_refresh.dart';
 import 'package:volty/blocs/dash_bloc/dash_cubit.dart';
+import 'package:volty/components/general/refresh.dart';
 import 'package:volty/src/app_globals.dart';
 import 'package:volty/views/main/index.dart';
 import '../../blocs/dash_bloc/dash_states.dart';
@@ -19,30 +21,33 @@ class DashboardScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      child: Padding(
-        padding: const EdgeInsets.all(20.0),
-        child: BlocConsumer<DashCubit, DashStates>(
-          listener: (context, state) {},
-          builder: (context, state) {
-            return Column(
-              spacing: 20,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                WelcomeHeader(),
-                EnergyCard(),
-                // BalanceCard(),
-                MetricsCard(),
-                WarningWidget(),
-                ActionsCard(),
-                AiCard(),
-                _buildActiveDevicesPreview(),
-                // _buildEnergySourcesCard(),
-                _buildWeeklyConsumption(),
-                SizedBox(height: kToolbarHeight * 1.5),
-              ],
-            );
-          },
+    return CustomRefresh(
+      onRefresh: () async => await context.read<DashCubit>().fetchDashboard(),
+      child: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.all(20.0),
+          child: BlocConsumer<DashCubit, DashStates>(
+            listener: (context, state) {},
+            builder: (context, state) {
+              return Column(
+                spacing: 20,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  WelcomeHeader(),
+                  EnergyCard(),
+                  // BalanceCard(),
+                  MetricsCard(),
+                  WarningWidget(),
+                  ActionsCard(),
+                  AiCard(),
+                  _buildActiveDevicesPreview(),
+                  // _buildEnergySourcesCard(),
+                  _buildWeeklyConsumption(),
+                  SizedBox(height: kToolbarHeight * 1.5),
+                ],
+              );
+            },
+          ),
         ),
       ),
     );
@@ -201,6 +206,7 @@ class DashboardScreen extends StatelessWidget {
   }
 
   Widget _buildWeeklyConsumption() {
+    final weeklyData = AppGlobals.dashModel?.weeklyConsumption;
     return Container(
       padding: const EdgeInsets.all(25),
       decoration: BoxDecoration(
@@ -222,17 +228,24 @@ class DashboardScreen extends StatelessWidget {
                   fontWeight: FontWeight.bold,
                 ),
               ),
+
               Row(
                 children: [
                   Icon(
-                    Icons.arrow_upward,
-                    color: const Color(0xFFFF6B6B),
+                    (weeklyData!.isIncrease ?? false)
+                        ? Icons.arrow_upward
+                        : Icons.arrow_downward,
+                    color: (weeklyData.isIncrease ?? false)
+                        ? const Color(0xFFFF6B6B)
+                        : const Color(0xFF4CAF50),
                     size: 16,
                   ),
                   Text(
-                    ' 8.2%',
+                    ' ${(weeklyData.percentageChange ?? 0).abs().toStringAsFixed(1)}%',
                     style: TextStyle(
-                      color: const Color(0xFFFF6B6B),
+                      color: (weeklyData.isIncrease ?? false)
+                          ? const Color(0xFFFF6B6B)
+                          : const Color(0xFF4CAF50),
                       fontSize: 13,
                       fontWeight: FontWeight.bold,
                     ),
@@ -247,15 +260,14 @@ class DashboardScreen extends StatelessWidget {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               crossAxisAlignment: CrossAxisAlignment.end,
-              children: [
-                _buildChartBar('سبت', 0.6, 18.5, false),
-                _buildChartBar('أحد', 0.8, 24.2, false),
-                _buildChartBar('إثن', 0.5, 15.8, false),
-                _buildChartBar('ثلا', 0.9, 28.5, false),
-                _buildChartBar('أرب', 0.7, 21.3, false),
-                _buildChartBar('خمي', 0.85, 26.8, false),
-                _buildChartBar('جمع', 0.68, 23.4, true),
-              ],
+              children: weeklyData.weeklyData!.map((dayData) {
+                return _buildChartBar(
+                  dayData.day ?? '',
+                  dayData.normalizedValue ?? 0,
+                  dayData.consumption ?? 0,
+                  dayData.isToday ?? false,
+                );
+              }).toList(),
             ),
           ),
         ],
@@ -270,7 +282,7 @@ class DashboardScreen extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.end,
           children: [
-            if (isActive)
+            if (isActive && kwh > 0)
               Container(
                 padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 3),
                 decoration: BoxDecoration(
@@ -286,19 +298,21 @@ class DashboardScreen extends StatelessWidget {
                   ),
                 ),
               ),
-            if (isActive) const SizedBox(height: 6),
+            if (isActive && kwh > 0) const SizedBox(height: 6),
             Container(
-              height: 160 * value,
+              height:
+                  160 *
+                  (value > 0 ? value : 0.1), // Minimum height for visibility
               decoration: BoxDecoration(
                 gradient: LinearGradient(
                   begin: Alignment.topCenter,
                   end: Alignment.bottomCenter,
-                  colors: isActive
+                  colors: isActive && kwh > 0
                       ? [AppColors.primary, const Color(0xFF8FD63F)]
                       : [const Color(0xFF2D3548), const Color(0xFF1E2538)],
                 ),
                 borderRadius: BorderRadius.circular(8),
-                boxShadow: isActive
+                boxShadow: isActive && kwh > 0
                     ? [
                         BoxShadow(
                           color: AppColors.primary.withOpacity(0.3),
@@ -308,7 +322,7 @@ class DashboardScreen extends StatelessWidget {
                     : null,
               ),
             ),
-
+            const SizedBox(height: 6),
             Text(
               day,
               style: TextStyle(

@@ -1,5 +1,5 @@
 class AppEndPoints {
-  static const String endPoint = 'https://volty.barmajha.com/backend/public';
+  static const String endPoint = 'https://docs.ovnix.io/backend/volty/public';
 
   // authentication
   static const String createUser = '$endPoint/auth/register.php';

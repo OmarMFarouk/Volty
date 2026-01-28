@@ -8,6 +8,7 @@ import 'package:volty/components/general/snackbar.dart';
 import 'package:volty/models/device_model.dart';
 import 'package:volty/src/app_globals.dart';
 
+import '../../components/general/refresh.dart';
 import '../../enums/devices_types_enum.dart';
 
 class DevicesScreen extends StatefulWidget {
@@ -74,31 +75,36 @@ class _DevicesScreenState extends State<DevicesScreen> {
             ),
           );
         }
-        return SingleChildScrollView(
-          child: Padding(
-            padding: const EdgeInsets.all(20.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                _buildHeader(),
-                const SizedBox(height: 25),
-                if (_showAIInsights && rooms.isNotEmpty) ...[
-                  _buildAIInsightBanner(rooms),
-                  const SizedBox(height: 20),
-                ],
-                if (rooms.isEmpty) ...[
-                  _buildEmptyState(),
-                ] else ...[
-                  ...rooms.map(
-                    (room) => Padding(
-                      padding: const EdgeInsets.only(bottom: 20),
-                      child: _buildRoomSection(room),
+        return CustomRefresh(
+          onRefresh: () async =>
+              await context.read<DevicesCubit>().fetchDevices(),
+          child: SingleChildScrollView(
+            physics: AlwaysScrollableScrollPhysics(),
+            child: Padding(
+              padding: const EdgeInsets.all(20.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  _buildHeader(),
+                  const SizedBox(height: 25),
+                  if (_showAIInsights && rooms.isNotEmpty) ...[
+                    _buildAIInsightBanner(rooms),
+                    const SizedBox(height: 20),
+                  ],
+                  if (rooms.isEmpty) ...[
+                    _buildEmptyState(),
+                  ] else ...[
+                    ...rooms.map(
+                      (room) => Padding(
+                        padding: const EdgeInsets.only(bottom: 20),
+                        child: _buildRoomSection(room),
+                      ),
                     ),
-                  ),
+                  ],
+                  _buildAddRoomButton(),
+                  SizedBox(height: kToolbarHeight * 1.5),
                 ],
-                _buildAddRoomButton(),
-                SizedBox(height: kToolbarHeight * 1.5),
-              ],
+              ),
             ),
           ),
         );
@@ -538,20 +544,24 @@ class _DevicesScreenState extends State<DevicesScreen> {
 
           const SizedBox(height: 15),
 
-          Expanded(
-            child: TextButton.icon(
-              onPressed: () => _showDeviceSettingsDialog(device, room),
-              icon: Icon(Icons.settings, size: 18),
-              label: Text('إعدادات'),
-              style: TextButton.styleFrom(
-                foregroundColor: Colors.grey[300],
-                backgroundColor: const Color(0xFF2D3548),
-                padding: const EdgeInsets.symmetric(vertical: 12),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(12),
+          Row(
+            children: [
+              Expanded(
+                child: TextButton.icon(
+                  onPressed: () => _showDeviceSettingsDialog(device, room),
+                  icon: Icon(Icons.settings, size: 18),
+                  label: Text('إعدادات'),
+                  style: TextButton.styleFrom(
+                    foregroundColor: Colors.grey[300],
+                    backgroundColor: const Color(0xFF2D3548),
+                    padding: const EdgeInsets.symmetric(vertical: 12),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                  ),
                 ),
               ),
-            ),
+            ],
           ),
         ],
       ),
@@ -655,10 +665,7 @@ class _DevicesScreenState extends State<DevicesScreen> {
   }
 
   void _showEditRoomDialog(RoomModel room) {
-    final TextEditingController controller = TextEditingController(
-      text: room.name,
-    );
-
+    final cubit = context.read<DevicesCubit>();
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
@@ -666,7 +673,7 @@ class _DevicesScreenState extends State<DevicesScreen> {
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
         title: Text('تعديل الغرفة', style: TextStyle(color: Colors.white)),
         content: TextField(
-          controller: controller,
+          controller: cubit.nameCont,
           autofocus: true,
           decoration: InputDecoration(
             hintText: 'اسم الغرفة',
@@ -689,7 +696,7 @@ class _DevicesScreenState extends State<DevicesScreen> {
           ),
           ElevatedButton(
             onPressed: () {
-              if (controller.text.isNotEmpty) {
+              if (cubit.nameCont.text.isNotEmpty) {
                 context.read<DevicesCubit>().manageRoom(roomId: room.id!);
                 Navigator.pop(context);
               }

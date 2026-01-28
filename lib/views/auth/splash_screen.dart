@@ -346,7 +346,7 @@ class _SplashScreenState extends State<SplashScreen>
             child: Column(
               children: [
                 Text(
-                  'Volty',
+                  AppString.appTitle.tr(),
                   textAlign: TextAlign.center,
                   style: TextStyle(
                     color: AppColors.primaryFont,

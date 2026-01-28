@@ -128,9 +128,9 @@ class RoomModel {
   }
   Map<String, dynamic> manageJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
-    if (id != 0) data['room_id'] = id;
-    data['room_hid'] = AppGlobals.currentHouse!.id;
-    data['room_name'] = name;
+    if (id != 0) data['room_id'] = id.toString();
+    data['room_hid'] = AppGlobals.currentHouse!.id.toString();
+    data['room_name'] = name.toString();
     return data;
   }
 }
