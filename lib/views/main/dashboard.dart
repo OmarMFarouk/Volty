@@ -159,30 +159,31 @@ class DashboardScreen extends StatelessWidget {
                     Icon(Icons.bolt, color: Colors.grey[400], size: 14),
                     const SizedBox(width: 4),
                     Text(
-                      device.totalConsumption?.toStringAsFixed(2) ?? '0',
+                      "${(device.totalConsumption! / 1000).toStringAsFixed(2)} ${AppString.unitK.tr()}",
                       style: TextStyle(color: Colors.grey[400], fontSize: 13),
                     ),
                     const SizedBox(width: 15),
-                    Container(
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 8,
-                        vertical: 2,
-                      ),
-                      decoration: BoxDecoration(
-                        color: _getPercentageColor(
-                          device.deviceLoad,
-                        ).withOpacity(0.2),
-                        borderRadius: BorderRadius.circular(8),
-                      ),
-                      child: Text(
-                        '${device.deviceLoad}%',
-                        style: TextStyle(
-                          color: _getPercentageColor(device.deviceLoad),
-                          fontSize: 11,
-                          fontWeight: FontWeight.bold,
+                    if (device.deviceLoad.isFinite)
+                      Container(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 8,
+                          vertical: 2,
+                        ),
+                        decoration: BoxDecoration(
+                          color: _getPercentageColor(
+                            device.deviceLoad,
+                          ).withOpacity(0.2),
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                        child: Text(
+                          '${device.deviceLoad}%',
+                          style: TextStyle(
+                            color: _getPercentageColor(device.deviceLoad),
+                            fontSize: 11,
+                            fontWeight: FontWeight.bold,
+                          ),
                         ),
                       ),
-                    ),
                   ],
                 ),
               ],
@@ -191,7 +192,7 @@ class DashboardScreen extends StatelessWidget {
           Switch(
             value: device.isOn,
             onChanged: (value) async {
-              device.state = isOn ? "off" : "on";
+              device.state = value == true ? "off" : "on";
               context.read<DashCubit>().refreshState();
               await context.read<DevicesCubit>().toggleDevice(
                 deviceId: device.id!,

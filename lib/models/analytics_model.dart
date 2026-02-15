@@ -1,5 +1,3 @@
-import 'package:volty/src/app_localization.dart';
-
 class AnalyticsModel {
   bool? success;
   String? message;

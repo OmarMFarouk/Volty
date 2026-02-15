@@ -6,8 +6,9 @@ import '../../src/app_colors.dart';
 
 class EnergyMeterPainter extends CustomPainter {
   final double progress;
+  final String hintText;
 
-  EnergyMeterPainter({required this.progress});
+  EnergyMeterPainter({required this.progress, required this.hintText});
 
   @override
   void paint(Canvas canvas, Size size) {
@@ -97,7 +98,7 @@ class EnergyMeterPainter extends CustomPainter {
     // Subtitle
     final subtitlePainter = TextPainter(
       text: TextSpan(
-        text: 'من الحد الأقصى',
+        text: hintText,
         style: TextStyle(color: Colors.grey[400], fontSize: 12),
       ),
       textDirection: TextDirection.rtl,

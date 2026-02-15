@@ -107,7 +107,7 @@
   "total": "الإجمالي",
   "currency": "ج.م",
   "unit": "واط/ساعة",
-  "unit_k": "كيلوواط/ساعة",
+  "unit_k": "ك.واط/ساعة",
   "current_total": "الإجمالي الحالي",
   "cost_breakdown": "تفاصيل التكلفة",
   "peak_consumption_hours":"أوقات الاستهلاك العالي",

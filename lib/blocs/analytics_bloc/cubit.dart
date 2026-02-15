@@ -26,7 +26,6 @@ class AnalyticsCubit extends Cubit<AnalyticsStates> {
         .then((r) {
           if (r == null || r.toString().startsWith('error')) {
             emit(AnalyticsError(msg: 'تحقق من الإتصال بالإنترنت'));
-            print("analytics error");
           } else if (r['success'] == true) {
             analyticsModel = AnalyticsModel.fromJson(r);
             AppGlobals.analyticsModel = analyticsModel;
@@ -37,7 +36,6 @@ class AnalyticsCubit extends Cubit<AnalyticsStates> {
             print("analytics error");
           }
         });
-    print("analytics ending");
   }
 
   void changePeriod(String period) {

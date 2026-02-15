@@ -46,7 +46,7 @@ class Device {
           ?.name ??
       "N/A";
   double get deviceLoad {
-    double totalLoad = AppGlobals.dashModel?.currentWHRate ?? 0;
+    double totalLoad = AppGlobals.dashModel?.currentWHRate ?? 1;
     return (whValue ?? 0) / totalLoad * 100;
   }
 

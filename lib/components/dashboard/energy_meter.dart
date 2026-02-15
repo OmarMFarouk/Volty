@@ -83,7 +83,7 @@ class _EnergyCardState extends State<EnergyCard> {
                   ),
                   const SizedBox(height: 5),
                   Text(
-                    AppString.continuousUpdate.tr(),
+                    "${AppString.continuousUpdate.tr()} - (${AppString.unitK.tr()})",
                     style: TextStyle(color: Colors.grey[400], fontSize: 12),
                   ),
                 ],
@@ -144,7 +144,10 @@ class _EnergyCardState extends State<EnergyCard> {
           ),
           CustomPaint(
             size: const Size(200, 180),
-            painter: EnergyMeterPainter(progress: progressing),
+            painter: EnergyMeterPainter(
+              progress: progressing,
+              hintText: AppString.fromMax.tr(),
+            ),
           ),
           Container(
             padding: const EdgeInsets.all(20),
@@ -154,27 +157,35 @@ class _EnergyCardState extends State<EnergyCard> {
               border: Border.all(color: const Color(0xFF2D3548)),
             ),
             child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
-                _buildMeterInfo(
-                  AppString.liveConsumption.tr(),
-                  '${((AppGlobals.dashModel!.currentWHRate ?? 0) / 1000).toStringAsFixed(2)} ${AppString.unitK.tr()}',
-                  Icons.bolt,
-                  AppColors.primary,
+                Expanded(
+                  child: _buildMeterInfo(
+                    AppString.liveConsumption.tr(),
+                    ((AppGlobals.dashModel!.currentWHRate ?? 0) / 1000)
+                        .toStringAsFixed(2),
+                    Icons.bolt,
+                    AppColors.primary,
+                  ),
                 ),
                 Container(width: 1, height: 40, color: const Color(0xFF2D3548)),
-                _buildMeterInfo(
-                  AppString.today.tr(),
-                  '${((AppGlobals.dashModel!.todayWHConsumption ?? 0) / 1000).toStringAsFixed(2)}  ${AppString.unitK.tr()}',
-                  Icons.today,
-                  const Color(0xFF4ECDC4),
+                Expanded(
+                  child: _buildMeterInfo(
+                    AppString.today.tr(),
+                    ((AppGlobals.dashModel!.todayWHConsumption ?? 0) / 1000)
+                        .toStringAsFixed(2),
+                    Icons.today,
+                    const Color(0xFF4ECDC4),
+                  ),
                 ),
                 Container(width: 1, height: 40, color: const Color(0xFF2D3548)),
-                _buildMeterInfo(
-                  AppString.peak.tr(),
-                  '${((AppGlobals.dashModel!.todakWHPeak ?? 0) / 1000).toStringAsFixed(2)}  ${AppString.unitK.tr()}',
-                  Icons.trending_up,
-                  const Color(0xFFFF6B6B),
+                Expanded(
+                  child: _buildMeterInfo(
+                    AppString.peak.tr(),
+                    ((AppGlobals.dashModel!.todakWHPeak ?? 0) / 1000)
+                        .toStringAsFixed(2),
+                    Icons.trending_up,
+                    const Color(0xFFFF6B6B),
+                  ),
                 ),
               ],
             ),
