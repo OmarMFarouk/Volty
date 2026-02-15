@@ -1,8 +1,11 @@
+import 'package:flutter/material.dart';
+
 class Household {
   String? id;
   String? name;
   String? rawAddress;
   String? ownerUID;
+  String? currentTemp;
   String? dateCreated;
   String get houseCity {
     String target = rawAddress?.split('§§')[0] ?? "";
@@ -22,11 +25,22 @@ class Household {
     return target.split(' ')[0];
   }
 
+  IconData get currentTempIcon {
+    double temp = double.tryParse(currentTemp ?? '25') ?? 25.0;
+
+    if (temp > 25) return Icons.wb_sunny;
+    if (temp > 20) return Icons.wb_cloudy;
+    if (temp > 15) return Icons.cloud;
+    if (temp > 10) return Icons.cloud_queue;
+    return Icons.ac_unit;
+  }
+
   Household({
     this.id,
     this.name,
     this.rawAddress,
     this.ownerUID,
+    this.currentTemp,
     this.dateCreated,
   });
 
@@ -35,6 +49,7 @@ class Household {
     name = json['household_name'];
     rawAddress = json['household_address'];
     ownerUID = json['household_ownerId'];
+    currentTemp = json['house_temp'].toString();
     dateCreated = json['household_dateCreated'];
   }
 }

@@ -13,7 +13,7 @@ class Device {
   String? createdByName;
   String? dateCreated;
   String? dateModified;
-  double? kwhValue;
+  double? whValue;
   double? monthConsumption;
   double? monthUptime;
   double? monthSessions;
@@ -26,7 +26,7 @@ class Device {
     this.houseId,
     this.roomId,
     this.name,
-    this.kwhValue,
+    this.whValue,
     this.state,
     this.type,
     this.createdByName,
@@ -46,8 +46,8 @@ class Device {
           ?.name ??
       "N/A";
   double get deviceLoad {
-    double totalLoad = AppGlobals.dashModel?.currentKwhRate ?? 0;
-    return (kwhValue ?? 0) / totalLoad * 100;
+    double totalLoad = AppGlobals.dashModel?.currentWHRate ?? 0;
+    return (whValue ?? 0) / totalLoad * 100;
   }
 
   Device.fromJson(Map<String, dynamic> json) {
@@ -61,7 +61,7 @@ class Device {
     createdByName = json['created_by_username'];
     dateCreated = json['device_dateCreated'];
     dateModified = json['device_dateModified'];
-    kwhValue = double.tryParse(json['device_kwh'].toString()) ?? 0;
+    whValue = double.tryParse(json['device_wh'].toString()) ?? 0;
     monthConsumption =
         double.tryParse(json['total_month_consumption'].toString()) ?? 0;
     totalConsumption =
@@ -74,6 +74,8 @@ class Device {
   }
   IconData get icon => DeviceTypes.getIcon(type);
   bool get isOn => state == "on";
+
+  set toggle(currState) => currState == 'on' ? "off" : "on";
   bool get isOff => state == "off";
 
   Map<String, dynamic> manageJson() {
@@ -83,7 +85,7 @@ class Device {
     data['device_rid'] = roomId.toString();
     data['device_name'] = name;
     data['device_type'] = type;
-    data['device_kwh'] = kwhValue.toString();
+    data['device_wh'] = whValue.toString();
     return data;
   }
 }
@@ -142,6 +144,8 @@ class DevicesModel {
 
   DevicesModel({this.success, this.message, this.rooms});
   int get roomsCount => rooms?.length ?? 0;
+  int get activeRoomsCount =>
+      rooms?.where((d) => (d?.activeCount ?? 0) > 1).length ?? 0;
   int get devicesCount => rooms?.expand((r) => r?.devices ?? []).length ?? 0;
   int get activeCount =>
       rooms

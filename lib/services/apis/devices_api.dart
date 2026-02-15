@@ -16,10 +16,9 @@ class DevicesApi {
         headers: {"Authorization": "Bearer $token"},
       );
 
-      log(response.body.toString());
       return jsonDecode(response.body);
     } on Exception catch (e) {
-      log("FetchingDevices error: $e");
+      log("fetchDevices error: $e");
       return "error $e";
     }
   }
@@ -33,8 +32,6 @@ class DevicesApi {
         headers: {"Authorization": "Bearer $token"},
       );
 
-      log(device.manageJson().toString());
-      log(response.body.toString());
       return jsonDecode(response.body);
     } on Exception catch (e) {
       log("ManageDevice error: $e");
@@ -51,10 +48,9 @@ class DevicesApi {
         headers: {"Authorization": "Bearer $token"},
       );
 
-      log(response.body.toString());
       return jsonDecode(response.body);
     } on Exception catch (e) {
-      log("ManageRooms error: $e");
+      log("manageRooms error: $e");
       return "error $e";
     }
   }
@@ -68,10 +64,9 @@ class DevicesApi {
         headers: {"Authorization": "Bearer $token"},
       );
 
-      log(response.body.toString());
       return jsonDecode(response.body);
     } on Exception catch (e) {
-      log("ManageRooms error: $e");
+      log("toggleDevice error: $e");
       return "error $e";
     }
   }
@@ -85,10 +80,9 @@ class DevicesApi {
         headers: {"Authorization": "Bearer $token"},
       );
 
-      log(response.body.toString());
       return jsonDecode(response.body);
     } on Exception catch (e) {
-      log("ManageRooms error: $e");
+      log("deleteDevice error: $e");
       return "error $e";
     }
   }
@@ -105,7 +99,7 @@ class DevicesApi {
       log(response.body.toString());
       return jsonDecode(response.body);
     } on Exception catch (e) {
-      log("ManageRooms error: $e");
+      log("deleteRoom error: $e");
       return "error $e";
     }
   }

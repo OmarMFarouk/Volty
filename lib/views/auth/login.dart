@@ -111,14 +111,14 @@ class LoginScreen extends StatelessWidget {
           decoration: BoxDecoration(
             gradient: const LinearGradient(
               colors: [
-                Color(0xFFB8FF57),
+                AppColors.primary,
                 Color(0xFF8FD63F),
               ], // AppColors.secondaryGradient
             ),
             borderRadius: BorderRadius.circular(25),
             boxShadow: [
               BoxShadow(
-                color: const Color(0xFFB8FF57).withOpacity(0.3),
+                color: AppColors.primary.withOpacity(0.3),
                 blurRadius: 30,
                 offset: const Offset(0, 15),
               ),
@@ -199,7 +199,7 @@ class LoginScreen extends StatelessWidget {
                   cubit.rememberMe = value ?? false;
                   cubit.refreshState();
                 },
-                activeColor: const Color(0xFFB8FF57),
+                activeColor: AppColors.primary,
                 checkColor: const Color(0xFF0A0E1A),
                 side: const BorderSide(color: Color(0xFF2D3548)),
               ),
@@ -216,7 +216,7 @@ class LoginScreen extends StatelessWidget {
           child: Text(
             AppString.forgot.tr(),
             style: TextStyle(
-              color: Color(0xFFB8FF57),
+              color: AppColors.primary,
               fontSize: 14,
               fontWeight: FontWeight.w600,
             ),
@@ -231,12 +231,12 @@ class LoginScreen extends StatelessWidget {
       height: 56,
       decoration: BoxDecoration(
         gradient: const LinearGradient(
-          colors: [Color(0xFFB8FF57), Color(0xFF8FD63F)],
+          colors: [AppColors.primary, Color(0xFF8FD63F)],
         ),
         borderRadius: BorderRadius.circular(18),
         boxShadow: [
           BoxShadow(
-            color: const Color(0xFFB8FF57).withOpacity(0.4),
+            color: AppColors.primary.withOpacity(0.4),
             blurRadius: 20,
             offset: const Offset(0, 10),
           ),
@@ -284,7 +284,7 @@ class LoginScreen extends StatelessWidget {
           child: Text(
             AppString.signup.tr(),
             style: TextStyle(
-              color: Color(0xFFB8FF57),
+              color: AppColors.primary,
               fontSize: 15,
               fontWeight: FontWeight.bold,
             ),

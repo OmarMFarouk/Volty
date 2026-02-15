@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../../src/app_colors.dart';
+
 class ActionsCard extends StatelessWidget {
   const ActionsCard({super.key});
 
@@ -31,7 +33,7 @@ class ActionsCard extends StatelessWidget {
               child: _buildActionButton(
                 'جدولة الأجهزة',
                 Icons.schedule_rounded,
-                const Color(0xFFB8FF57),
+                AppColors.primary,
               ),
             ),
           ],

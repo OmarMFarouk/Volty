@@ -1,5 +1,6 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:volty/src/app_colors.dart';
 import 'package:volty/src/app_globals.dart';
 import 'package:volty/src/app_string.dart';
 
@@ -64,21 +65,21 @@ class WelcomeHeader extends StatelessWidget {
                       vertical: 2,
                     ),
                     decoration: BoxDecoration(
-                      color: const Color(0xFFB8FF57).withOpacity(0.2),
+                      color: AppColors.primary.withOpacity(0.2),
                       borderRadius: BorderRadius.circular(10),
                     ),
                     child: Row(
                       children: [
                         Icon(
-                          Icons.wb_sunny,
-                          color: const Color(0xFFB8FF57),
+                          AppGlobals.currentHouse?.currentTempIcon,
+                          color: AppColors.primary,
                           size: 12,
                         ),
                         const SizedBox(width: 4),
                         Text(
-                          '28°',
+                          '${AppGlobals.currentHouse?.currentTemp}°',
                           style: TextStyle(
-                            color: const Color(0xFFB8FF57),
+                            color: AppColors.primary,
                             fontSize: 11,
                             fontWeight: FontWeight.bold,
                           ),
@@ -104,7 +105,7 @@ class WelcomeHeader extends StatelessWidget {
                 children: [
                   const Icon(
                     Icons.notifications_outlined,
-                    color: Color(0xFFB8FF57),
+                    color: AppColors.primary,
                     size: 24,
                   ),
                   Positioned(

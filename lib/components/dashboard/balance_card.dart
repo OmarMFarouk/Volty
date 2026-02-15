@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../../src/app_colors.dart';
+
 class BalanceCard extends StatelessWidget {
   const BalanceCard({super.key});
 
@@ -11,12 +13,12 @@ class BalanceCard extends StatelessWidget {
         gradient: LinearGradient(
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
-          colors: [const Color(0xFFB8FF57), const Color(0xFF8FD63F)],
+          colors: [AppColors.primary, const Color(0xFF8FD63F)],
         ),
         borderRadius: BorderRadius.circular(25),
         boxShadow: [
           BoxShadow(
-            color: const Color(0xFFB8FF57).withOpacity(0.4),
+            color: AppColors.primary.withOpacity(0.4),
             blurRadius: 25,
             offset: const Offset(0, 12),
           ),
@@ -226,7 +228,7 @@ class BalanceCard extends StatelessWidget {
                   ),
                   style: ElevatedButton.styleFrom(
                     backgroundColor: const Color(0xFF0A0E1A),
-                    foregroundColor: const Color(0xFFB8FF57),
+                    foregroundColor: AppColors.primary,
                     padding: const EdgeInsets.symmetric(vertical: 16),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(15),

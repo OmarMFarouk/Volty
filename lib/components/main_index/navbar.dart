@@ -1,4 +1,7 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:volty/src/app_string.dart';
+import '../../src/app_colors.dart';
 import '../general/my_animation.dart';
 
 class MyNavBar extends StatelessWidget {
@@ -28,10 +31,10 @@ class MyNavBar extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: [
-          _buildNavItem(Icons.home_rounded, 'الرئيسية', 0),
-          _buildNavItem(Icons.devices_other_rounded, 'الأجهزة', 1),
-          _buildNavItem(Icons.analytics_rounded, 'التحليلات', 2),
-          _buildNavItem(Icons.person_rounded, 'الحساب', 3),
+          _buildNavItem(Icons.home_rounded, AppString.home, 0),
+          _buildNavItem(Icons.devices_other_rounded, AppString.devicesTitle, 1),
+          _buildNavItem(Icons.analytics_rounded, AppString.analytics, 2),
+          _buildNavItem(Icons.person_rounded, AppString.account, 3),
         ],
       ),
     );
@@ -54,7 +57,7 @@ class MyNavBar extends StatelessWidget {
           padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
           decoration: BoxDecoration(
             color: isSelected
-                ? const Color(0xFFB8FF57).withOpacity(0.15)
+                ? AppColors.primary.withOpacity(0.15)
                 : Colors.transparent,
             borderRadius: BorderRadius.circular(15),
           ),
@@ -63,14 +66,14 @@ class MyNavBar extends StatelessWidget {
             children: [
               Icon(
                 icon,
-                color: isSelected ? const Color(0xFFB8FF57) : Colors.grey,
+                color: isSelected ? AppColors.primary : Colors.grey,
                 size: 26,
               ),
               const SizedBox(height: 4),
               Text(
-                label,
+                label.tr(),
                 style: TextStyle(
-                  color: isSelected ? const Color(0xFFB8FF57) : Colors.grey,
+                  color: isSelected ? AppColors.primary : Colors.grey,
                   fontSize: 11,
                   fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
                 ),

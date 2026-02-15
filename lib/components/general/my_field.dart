@@ -3,6 +3,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
+import '../../src/app_colors.dart';
 import '../../src/app_localization.dart';
 import '../../src/app_string.dart';
 
@@ -104,7 +105,7 @@ class _MyFieldState extends State<MyField> {
               hintText:
                   "${AppLocalization.isEnglish(context) ? "Enter" : "أدخل"} ${widget.hint}",
               hintStyle: TextStyle(color: Colors.grey[600]),
-              prefixIcon: Icon(widget.icon, color: const Color(0xFFB8FF57)),
+              prefixIcon: Icon(widget.icon, color: AppColors.primary),
               suffixIcon: widget.suffixIcon,
               border: InputBorder.none,
               contentPadding: const EdgeInsets.all(18),

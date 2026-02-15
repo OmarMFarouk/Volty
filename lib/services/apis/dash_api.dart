@@ -14,10 +14,9 @@ class DashApi {
         headers: {"Authorization": "Bearer $token"},
       );
 
-      log(response.body.toString());
       return jsonDecode(response.body);
     } on Exception catch (e) {
-      log("createOwner error: $e");
+      log("fetchDashboard error: $e");
       return {"error": e.toString()};
     }
   }

@@ -10,6 +10,8 @@ class AppColors {
   static const primary = Color(0xFFB8FF57); // Bright lime
   static const primaryDark = Color(0xFF8FD63F); // Darker lime
 
+  // Tiers Colors
+  static const tiersColors = [primary, yellow, orange, purple, pink, red];
   // Gradients
   static const primaryGradient = [
     Color(0xFF0A0E1A), // Background dark

@@ -1,9 +1,12 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:volty/src/app_globals.dart';
+import 'package:volty/src/app_string.dart';
 
 class WarningWidget extends StatelessWidget {
   const WarningWidget({
     super.key,
-    this.title = 'فترة الذروة',
+    this.title = AppString.peakPeriod,
     this.subTitle =
         'الآن في وقت الذروة (2:00 م - 5:00 م)\nالتعرفة مرتفعة بنسبة 30%',
   });
@@ -42,7 +45,7 @@ class WarningWidget extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  title,
+                  title.tr(),
                   style: TextStyle(
                     color: Colors.white,
                     fontSize: 16,
@@ -51,7 +54,7 @@ class WarningWidget extends StatelessWidget {
                 ),
                 const SizedBox(height: 4),
                 Text(
-                  subTitle,
+                  "${AppGlobals.analyticsModel?.peakUsage?.first.timeRange ?? subTitle} ~ ${(AppGlobals.analyticsModel!.peakUsage!.first.avgConsumption! / 1000)} ${AppString.unitK.tr()} ",
                   style: TextStyle(color: Colors.grey[300], fontSize: 12),
                 ),
               ],

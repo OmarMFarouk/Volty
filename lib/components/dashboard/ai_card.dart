@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../../src/app_colors.dart';
+
 class AiCard extends StatelessWidget {
   const AiCard({super.key});
 
@@ -56,7 +58,7 @@ class AiCard extends StatelessWidget {
                     Row(
                       children: [
                         Text(
-                          'مساعد الذكاء الاصطناعي',
+                          'مساعد شخصي ذكي',
                           style: TextStyle(
                             color: Colors.white,
                             fontSize: 18,
@@ -70,7 +72,7 @@ class AiCard extends StatelessWidget {
                             vertical: 3,
                           ),
                           decoration: BoxDecoration(
-                            color: const Color(0xFFB8FF57),
+                            color: AppColors.primary,
                             borderRadius: BorderRadius.circular(8),
                           ),
                           child: Row(
@@ -228,14 +230,14 @@ class AiCard extends StatelessWidget {
           padding: const EdgeInsets.all(4),
           decoration: BoxDecoration(
             color: isRecommended
-                ? const Color(0xFFB8FF57).withOpacity(0.3)
+                ? AppColors.primary.withOpacity(0.3)
                 : Colors.white.withOpacity(0.2),
             borderRadius: BorderRadius.circular(6),
           ),
           child: Icon(
             isRecommended ? Icons.star_rounded : Icons.circle,
             color: isRecommended
-                ? const Color(0xFFB8FF57)
+                ? AppColors.primary
                 : Colors.white.withOpacity(0.6),
             size: isRecommended ? 16 : 8,
           ),

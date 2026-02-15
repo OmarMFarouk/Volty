@@ -22,7 +22,11 @@ class AuthApi {
         ),
       );
 
-      log(response.body.toString());
+      log(
+        model
+            .createJson(houseAddress: houseAddress, houseName: houseName)
+            .toString(),
+      );
       return jsonDecode(response.body);
     } on Exception catch (e) {
       log("createOwner error: $e");
@@ -40,7 +44,6 @@ class AuthApi {
         headers: {"Authorization": "Bearer $token"},
       );
 
-      log(response.body.toString());
       return jsonDecode(response.body);
     } on Exception catch (e) {
       log("loginUser error: $e");
@@ -57,7 +60,6 @@ class AuthApi {
         headers: {"Authorization": "Bearer $token"},
       );
 
-      log(response.body.toString());
       return jsonDecode(response.body);
     } on Exception catch (e) {
       log("resetPassword error: $e");
@@ -72,8 +74,6 @@ class AuthApi {
         Uri.parse(AppEndPoints.tokenChecker),
         headers: {"Authorization": "Bearer $token"},
       );
-
-      log(response.body.toString());
       return jsonDecode(response.body);
     } on Exception catch (e) {
       log("tokenChecker error: $e");
@@ -91,7 +91,6 @@ class AuthApi {
         headers: {"Authorization": "Bearer $token"},
       );
 
-      log(response.body.toString());
       return jsonDecode(response.body);
     } on Exception catch (e) {
       log("changePassword error: $e");

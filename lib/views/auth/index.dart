@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:volty/src/app_colors.dart';
 import 'package:volty/views/auth/login.dart';
@@ -5,6 +6,7 @@ import 'package:volty/views/auth/signup.dart';
 import 'package:volty/views/auth/welcome.dart';
 
 import '../../components/general/snackbar.dart';
+import '../../src/app_string.dart';
 
 class AuthIndex extends StatefulWidget {
   const AuthIndex({super.key});
@@ -34,7 +36,7 @@ class _AuthIndexState extends State<AuthIndex> {
             MySnackBar.show(
               context: context,
               isAlert: true,
-              text: 'هل انت متأكد؟',
+              text: AppString.sureMsg.tr(),
             );
             Future.delayed(const Duration(seconds: 2), () {
               canPop = false;

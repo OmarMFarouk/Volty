@@ -33,7 +33,7 @@ class DevicesCubit extends Cubit<DevicesStates> {
     Device device = Device(
       id: deviceId,
       name: nameCont.text.trim(),
-      kwhValue: double.tryParse(kwhCont.text) ?? 0,
+      whValue: double.tryParse(kwhCont.text) ?? 0,
       roomId: roomId,
       type: selectedType.en,
     );
@@ -53,11 +53,11 @@ class DevicesCubit extends Cubit<DevicesStates> {
 
   Future<void> toggleDevice({required int deviceId}) async {
     emit(DevicesLoading());
-    await DevicesApi().toggleDevice(deviceId).then((r) {
+    await DevicesApi().toggleDevice(deviceId).then((r) async {
       if (r == null || r.toString().startsWith('error')) {
         emit(DevicesError(msg: 'تحقق من الإتصال بالإنترنت'));
       } else if (r['success'] == true) {
-        fetchDevices();
+        await fetchDevices();
         emit(DevicesSuccess(msg: r['message']));
       } else {
         emit(DevicesError(msg: r['message']));

@@ -286,12 +286,12 @@ class _SplashScreenState extends State<SplashScreen>
                 gradient: LinearGradient(
                   begin: Alignment.topLeft,
                   end: Alignment.bottomRight,
-                  colors: AppColors.secondaryGradient,
+                  colors: AppColors.primaryGradient,
                 ),
                 borderRadius: BorderRadius.circular(35),
                 boxShadow: [
                   BoxShadow(
-                    color: const Color(0xFFB8FF57).withOpacity(0.4),
+                    color: AppColors.primary.withOpacity(0.4),
                     blurRadius: 40,
                     spreadRadius: 5,
                     offset: const Offset(0, 20),
@@ -418,7 +418,7 @@ class _SplashScreenState extends State<SplashScreen>
                 height: isTablet ? 60 : 50,
                 child: LoadingIndicator(
                   indicatorType: Indicator.ballRotate,
-                  colors: AppColors.secondaryGradient,
+                  colors: AppColors.primaryGradient,
                   strokeWidth: 2,
                 ),
               ),

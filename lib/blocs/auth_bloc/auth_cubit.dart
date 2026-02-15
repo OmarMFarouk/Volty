@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:volty/src/app_shared.dart';
 import '../../models/auth_model.dart';
 import '../../services/apis/auth_api.dart';
 import '../../src/app_secured.dart';
@@ -86,7 +87,7 @@ class AuthCubit extends Cubit<AuthStates> {
 
   clearAndSave({String? token}) async {
     if (token != null) {
-      await AppSecured.saveString('user_token', token);
+      await AppShared.saveToken(token);
     }
     if (rememberMe) await AppSecured.saveString("user_email", emailCont.text);
     if (!rememberMe) await AppSecured.saveString("user_email", "");

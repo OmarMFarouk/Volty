@@ -2,14 +2,14 @@ class DashModel {
   WeeklyConsumptionModel? weeklyConsumption;
   bool? success;
   String? message;
-  double? currentKwhRate, todayKwhConsumption, todakKwhPeak, loadPercentage;
+  double? currentWHRate, todayWHConsumption, todakWHPeak, loadPercentage;
 
   DashModel({
     this.success,
     this.message,
-    this.currentKwhRate,
-    this.todakKwhPeak,
-    this.todayKwhConsumption,
+    this.currentWHRate,
+    this.todakWHPeak,
+    this.todayWHConsumption,
     this.loadPercentage,
   });
   DashModel.fromJson(Map<String, dynamic> json) {
@@ -18,10 +18,10 @@ class DashModel {
     weeklyConsumption = json['weekly_consumption'] != null
         ? WeeklyConsumptionModel.fromJson(json['weekly_consumption'])
         : null;
-    currentKwhRate = double.tryParse(json['current_kwh_rate'].toString()) ?? 0;
-    todayKwhConsumption =
+    currentWHRate = double.tryParse(json['current_wh_rate'].toString()) ?? 0;
+    todayWHConsumption =
         double.tryParse(json['today_total_consumption'].toString()) ?? 0;
-    todakKwhPeak =
+    todakWHPeak =
         double.tryParse(json['today_peak_consumption'].toString()) ?? 0;
     loadPercentage = double.tryParse(json['load_percentage'].toString()) ?? 0;
   }

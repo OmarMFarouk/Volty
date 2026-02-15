@@ -1,5 +1,5 @@
 class AppEndPoints {
-  static const String endPoint = 'https://docs.ovnix.io/backend/volty/public';
+  static const String endPoint = 'https://volty.barmajha.com/backend/public';
 
   // authentication
   static const String createUser = '$endPoint/auth/register.php';
@@ -14,6 +14,9 @@ class AppEndPoints {
 
   // Dashboard
   static const String showDashboard = '$endPoint/dashboard/show_dashboard.php';
+
+  // Analytics
+  static const String showAnalytics = '$endPoint/analytics/show_analytics.php';
 
   // Devices & Rooms
   static const String showDevices = '$endPoint/devices/show_devices.php';

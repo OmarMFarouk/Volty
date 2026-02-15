@@ -1,4 +1,6 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:volty/src/app_string.dart';
 
 import '../../src/app_globals.dart';
 
@@ -11,9 +13,9 @@ class MetricsCard extends StatelessWidget {
       children: [
         Expanded(
           child: _buildMetricCard(
-            'التوفير الشهري',
-            '12.5%',
-            '↓ 125 ج.م',
+            "${AppString.rooms.tr()} ${AppString.active.tr()}",
+            AppGlobals.devicesModel!.activeRoomsCount.toString(),
+            "${AppString.out.tr()} ${AppGlobals.devicesModel!.roomsCount}",
             Icons.trending_down_rounded,
             const Color(0xFF4ECDC4),
           ),
@@ -21,9 +23,9 @@ class MetricsCard extends StatelessWidget {
         const SizedBox(width: 15),
         Expanded(
           child: _buildMetricCard(
-            'الأجهزة النشطة',
+            AppString.activeDevices.tr(),
             AppGlobals.devicesModel?.activeCount.toString() ?? "0",
-            'من ${AppGlobals.devicesModel?.devicesCount.toString() ?? "0"} جهاز',
+            "${AppString.out.tr()} ${AppGlobals.devicesModel!.devicesCount}",
             Icons.power_rounded,
             const Color(0xFFFF6B6B),
           ),

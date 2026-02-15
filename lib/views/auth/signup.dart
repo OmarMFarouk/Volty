@@ -9,7 +9,6 @@ import 'package:volty/src/app_colors.dart';
 import 'package:volty/src/app_string.dart';
 
 import '../../components/general/my_loading_indicator.dart';
-import '../../src/app_localization.dart';
 import '../../src/app_navigator.dart';
 import 'splash_screen.dart';
 
@@ -24,11 +23,12 @@ class _SignupScreenState extends State<SignupScreen> {
   int currentStep = 0;
   final PageController _pageController = PageController();
   final formKey = GlobalKey<FormState>();
-  AuthCubit cubit = AuthCubit();
+  late AuthCubit cubit;
   bool obscurePassword = true;
   bool obscureConfirmPassword = true;
 
   void nextStep() {
+    FocusManager.instance.primaryFocus?.unfocus();
     if (formKey.currentState!.validate()) {
       if (currentStep < 2) {
         setState(() => currentStep++);
@@ -40,14 +40,14 @@ class _SignupScreenState extends State<SignupScreen> {
         return;
       }
       if (currentStep == 2 &&
-          _calculatePasswordStrength(cubit.passwordCont.text) > 2 &&
-          _calculatePasswordStrength(cubit.cPasswordCont.text) > 2) {
+          _calculatePasswordStrength(cubit.passwordCont.text) == 5) {
         cubit.createUser();
       }
     }
   }
 
   void previousStep() {
+    FocusManager.instance.primaryFocus?.unfocus();
     if (currentStep > 0) {
       setState(() => currentStep--);
       _pageController.animateToPage(
@@ -56,12 +56,6 @@ class _SignupScreenState extends State<SignupScreen> {
         curve: Curves.easeInOut,
       );
     }
-  }
-
-  @override
-  void initState() {
-    Future.microtask(() => cubit = context.read());
-    super.initState();
   }
 
   @override
@@ -90,6 +84,7 @@ class _SignupScreenState extends State<SignupScreen> {
         }
       },
       builder: (context, state) {
+        cubit = context.read<AuthCubit>();
         return Scaffold(
           backgroundColor: AppColors.backGround,
           body: SafeArea(
@@ -194,15 +189,13 @@ class _SignupScreenState extends State<SignupScreen> {
               color: isActive ? null : const Color(0xFF2D3548),
               shape: BoxShape.circle,
               border: Border.all(
-                color: isActive
-                    ? const Color(0xFFB8FF57)
-                    : const Color(0xFF2D3548),
+                color: isActive ? AppColors.primary : const Color(0xFF2D3548),
                 width: 2,
               ),
               boxShadow: isActive
                   ? [
                       BoxShadow(
-                        color: const Color(0xFFB8FF57).withOpacity(0.4),
+                        color: AppColors.primary.withOpacity(0.4),
                         blurRadius: 12,
                         spreadRadius: 2,
                       ),
@@ -319,6 +312,13 @@ class _SignupScreenState extends State<SignupScreen> {
             hint: AppString.email.tr(),
             icon: Icons.email_rounded,
             keyType: TextInputType.emailAddress,
+            validator: (p0) {
+              if (!RegExp(
+                r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$',
+              ).hasMatch(p0 ?? ""))
+                return AppString.invalidFormat.tr();
+              return null;
+            },
           ),
           const SizedBox(height: 25),
           // _buildFeaturesList(),
@@ -335,18 +335,11 @@ class _SignupScreenState extends State<SignupScreen> {
         children: [
           _buildStepTitle(
             AppString.password.tr(),
-            AppLocalization.isArabic(context)
-                ? 'اختر كلمة مرور قوية لحماية بياناتك'
-                : "Enter a strong password to protect your info",
+            AppString.passwordTitle.tr(),
             Icons.security_rounded,
           ),
           const SizedBox(height: 30),
-          _buildInfoCard(
-            AppLocalization.isArabic(context)
-                ? 'يجب أن تحتوي كلمة المرور على 8 أحرف على الأقل، وتتضمن حروفاً كبيرة وصغيرة وأرقاماً'
-                : 'Password should be atleast 8 characters long, containg upper,lower and number characters',
-            const Color(0xFFFFB84D),
-          ),
+          _buildInfoCard(AppString.passwordInfo.tr(), const Color(0xFFFFB84D)),
           const SizedBox(height: 25),
           MyField(
             onChanged: (p0) => setState(() {}),
@@ -365,6 +358,7 @@ class _SignupScreenState extends State<SignupScreen> {
           ),
           const SizedBox(height: 20),
           MyField(
+            onChanged: (p0) => setState(() {}),
             controller: cubit.cPasswordCont,
             hint: AppString.confirmPassword.tr(),
             icon: Icons.lock_reset_rounded,
@@ -398,7 +392,7 @@ class _SignupScreenState extends State<SignupScreen> {
             borderRadius: BorderRadius.circular(20),
             boxShadow: [
               BoxShadow(
-                color: const Color(0xFFB8FF57).withOpacity(0.3),
+                color: AppColors.primary.withOpacity(0.3),
                 blurRadius: 20,
                 offset: const Offset(0, 8),
               ),
@@ -465,75 +459,76 @@ class _SignupScreenState extends State<SignupScreen> {
     );
   }
 
-  Widget _buildFeaturesList() {
-    return Container(
-      padding: const EdgeInsets.all(20),
-      decoration: BoxDecoration(
-        gradient: const LinearGradient(
-          begin: Alignment.topLeft,
-          end: Alignment.bottomRight,
-          colors: [Color(0xFF1E2538), Color(0xFF161B2D)],
-        ),
-        borderRadius: BorderRadius.circular(20),
-        border: Border.all(color: const Color(0xFF2D3548)),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
-            children: [
-              const Icon(Icons.auto_awesome_rounded, color: Color(0xFFB8FF57)),
-              const SizedBox(width: 10),
-              const Text(
-                'ما ستحصل عليه',
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 16,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-            ],
-          ),
-          const SizedBox(height: 18),
-          _buildFeatureItem('مراقبة لحظية لاستهلاك الطاقة', Icons.bolt),
-          _buildFeatureItem(
-            'توصيات ذكية لتوفير الطاقة',
-            Icons.lightbulb_outline,
-          ),
-          _buildFeatureItem('التحكم في الأجهزة عن بعد', Icons.devices),
-          _buildFeatureItem('تحليلات وتقارير تفصيلية', Icons.analytics),
-        ],
-      ),
-    );
-  }
+  // Widget _buildFeaturesList() {
+  //   return Container(
+  //     padding: const EdgeInsets.all(20),
+  //     decoration: BoxDecoration(
+  //       gradient: const LinearGradient(
+  //         begin: Alignment.topLeft,
+  //         end: Alignment.bottomRight,
+  //         colors: [Color(0xFF1E2538), Color(0xFF161B2D)],
+  //       ),
+  //       borderRadius: BorderRadius.circular(20),
+  //       border: Border.all(color: const Color(0xFF2D3548)),
+  //     ),
+  //     child: Column(
+  //       crossAxisAlignment: CrossAxisAlignment.start,
+  //       children: [
+  //         Row(
+  //           children: [
+  //             const Icon(Icons.auto_awesome_rounded, color: AppColors.primary),
+  //             const SizedBox(width: 10),
+  //             const Text(
+  //               'ما ستحصل عليه',
+  //               style: TextStyle(
+  //                 color: Colors.white,
+  //                 fontSize: 16,
+  //                 fontWeight: FontWeight.bold,
+  //               ),
+  //             ),
+  //           ],
+  //         ),
+  //         const SizedBox(height: 18),
+  //         _buildFeatureItem('مراقبة لحظية لاستهلاك الطاقة', Icons.bolt),
+  //         _buildFeatureItem(
+  //           'توصيات ذكية لتوفير الطاقة',
+  //           Icons.lightbulb_outline,
+  //         ),
+  //         _buildFeatureItem('التحكم في الأجهزة عن بعد', Icons.devices),
+  //         _buildFeatureItem('تحليلات وتقارير تفصيلية', Icons.analytics),
+  //       ],
+  //     ),
+  //   );
+  // }
 
-  Widget _buildFeatureItem(String text, IconData icon) {
-    return Padding(
-      padding: const EdgeInsets.only(bottom: 15),
-      child: Row(
-        children: [
-          Container(
-            padding: const EdgeInsets.all(8),
-            decoration: BoxDecoration(
-              color: const Color(0xFFB8FF57).withOpacity(0.15),
-              borderRadius: BorderRadius.circular(10),
-            ),
-            child: Icon(icon, color: const Color(0xFFB8FF57), size: 18),
-          ),
-          const SizedBox(width: 12),
-          Expanded(
-            child: Text(
-              text,
-              style: TextStyle(color: Colors.grey[300], fontSize: 14),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
+  // Widget _buildFeatureItem(String text, IconData icon) {
+  //   return Padding(
+  //     padding: const EdgeInsets.only(bottom: 15),
+  //     child: Row(
+  //       children: [
+  //         Container(
+  //           padding: const EdgeInsets.all(8),
+  //           decoration: BoxDecoration(
+  //             color: AppColors.primary.withOpacity(0.15),
+  //             borderRadius: BorderRadius.circular(10),
+  //           ),
+  //           child: Icon(icon, color: AppColors.primary, size: 18),
+  //         ),
+  //         const SizedBox(width: 12),
+  //         Expanded(
+  //           child: Text(
+  //             text,
+  //             style: TextStyle(color: Colors.grey[300], fontSize: 14),
+  //           ),
+  //         ),
+  //       ],
+  //     ),
+  //   );
+  // }
 
   Widget _buildPasswordStrengthIndicator() {
     final password = cubit.passwordCont.text;
+    final cPassword = cubit.cPasswordCont.text;
     final strength = _calculatePasswordStrength(password);
 
     return Container(
@@ -546,8 +541,8 @@ class _SignupScreenState extends State<SignupScreen> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Text(
-            'قوة كلمة المرور',
+          Text(
+            AppString.passwordStrength.tr(),
             style: TextStyle(
               color: Colors.white,
               fontSize: 15,
@@ -556,7 +551,7 @@ class _SignupScreenState extends State<SignupScreen> {
           ),
           const SizedBox(height: 15),
           Row(
-            children: List.generate(4, (index) {
+            children: List.generate(5, (index) {
               return Expanded(
                 child: Container(
                   height: 6,
@@ -573,18 +568,25 @@ class _SignupScreenState extends State<SignupScreen> {
             }),
           ),
           const SizedBox(height: 15),
-          _buildPasswordRequirement('8 أحرف على الأقل', password.length >= 8),
           _buildPasswordRequirement(
-            'حرف كبير',
+            AppString.passwordLengthCheck.tr(),
+            password.length >= 8,
+          ),
+          _buildPasswordRequirement(
+            AppString.passwordUpperCheck.tr(),
             password.contains(RegExp(r'[A-Z]')),
           ),
           _buildPasswordRequirement(
-            'حرف صغير',
+            AppString.passwordLowerCheck.tr(),
             password.contains(RegExp(r'[a-z]')),
           ),
           _buildPasswordRequirement(
-            'رقم واحد',
+            AppString.passwordDigitsCheck.tr(),
             password.contains(RegExp(r'[0-9]')),
+          ),
+          _buildPasswordRequirement(
+            AppString.passwordConfirmCheck.tr(),
+            cPassword == password && password.isNotEmpty,
           ),
         ],
       ),
@@ -620,6 +622,7 @@ class _SignupScreenState extends State<SignupScreen> {
     if (password.contains(RegExp(r'[A-Z]'))) strength++;
     if (password.contains(RegExp(r'[a-z]'))) strength++;
     if (password.contains(RegExp(r'[0-9]'))) strength++;
+    if (password == cubit.cPasswordCont.text && password.isNotEmpty) strength++;
     return strength;
   }
 
@@ -632,7 +635,9 @@ class _SignupScreenState extends State<SignupScreen> {
       case 3:
         return [const Color(0xFF4ECDC4), const Color(0xFF4ECDC4)];
       case 4:
-        return [const Color(0xFFB8FF57), const Color(0xFF8FD63F)];
+        return [AppColors.primary, const Color(0xFF8FD63F)];
+      case 5:
+        return AppColors.secondaryGradient;
       default:
         return [const Color(0xFF2D3548), const Color(0xFF2D3548)];
     }

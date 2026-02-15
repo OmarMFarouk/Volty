@@ -55,9 +55,16 @@ class AppString {
   static const String termsAgreementMsg = 'terms_agreement_msg';
   static const String invalidEmail = 'invalid_email';
   static const String invalidPhone = 'invalid_phone';
-  static const String passwordTooShort = 'password_too_short';
+  static const String passwordTitle = 'password_title';
+  static const String passwordInfo = 'password_info';
   static const String passwordNoLetter = 'password_no_letter';
   static const String passwordMismatch = 'password_mismatch';
+  static const String passwordStrength = 'password_strength';
+  static const String passwordLengthCheck = 'pw_length_check';
+  static const String passwordDigitsCheck = 'pw_number_check';
+  static const String passwordConfirmCheck = 'pw_confirm_check';
+  static const String passwordUpperCheck = 'pw_upper_check';
+  static const String passwordLowerCheck = 'pw_lower_check';
 
   // Input Fields
   static const String email = 'email';
@@ -85,6 +92,7 @@ class AppString {
   static const String requiredMsg = 'required_msg';
   static const String required = 'required';
   static const String invalidFormat = 'invalid_format_msg';
+  static const String sureMsg = 'are_you_sure';
 
   // Days
   static const String saturday = 'saturday';
@@ -94,6 +102,11 @@ class AppString {
   static const String wednesday = 'wednesday';
   static const String thursday = 'thursday';
   static const String friday = 'friday';
+  static const String day = 'day';
+  static const String week = 'week';
+  static const String month = 'month';
+  static const String year = 'year';
+  static const String recentPeriod = 'recent_period';
 
   // About
   static const String aboutTitle = 'about_title';
@@ -122,9 +135,72 @@ class AppString {
   static const String delete = 'delete';
   static const String start = 'start';
   static const String okay = 'okay';
+  static const String add = 'add';
+  static const String moreThan = 'more_than';
+  static const String lessThan = 'less_than';
 
   // Network
   static const String checkNetwork = 'check_network';
+
+  // Analytics
+  static const String analytics = 'analytics';
+  static const String analyticsTitle = 'analytics_title';
+  static const String analyticsSubtitle = 'analytics_subtitle';
+  static const String consumptionTotal = 'consumption_total';
+  static const String total = 'total';
+  static const String currency = 'currency';
+  static const String unit = 'unit';
+  static const String unitK = 'unit_k';
+  static const String currentTotal = 'current_total';
+  static const String costBreakdown = 'cost_breakdown';
+  static const String peakHours = 'peak_consumption_hours';
+  static const String topConsumingDevices = 'top_consuming_devices';
+  static const String noData = 'no_data_available';
+  static const String noActiveDevices = 'no_active_devices';
+
+  // Devices
+  static const String devicesTitle = 'devices_title';
+  static const String devicesSubtitle = 'devices_subtitle';
+  static const String rooms = 'rooms';
+  static const String addRoom = 'add_room';
+  static const String deleteRoom = 'delete_room';
+  static const String editRoom = 'edit_room';
+  static const String roomName = 'room_name';
+  static const String device = 'device';
+  static const String addDevice = 'add_device';
+  static const String removeDevice = 'remove_device';
+  static const String editDevice = 'edit_device';
+  static const String deviceType = 'device_type';
+  static const String deviceName = 'device_name';
+  static const String powerConsumption = 'power_consumption';
+  static const String liveConsumption = 'live_consumption';
+  static const String continuousUpdate = 'continuous_update';
+  static const String peak = 'peak';
+  static const String out = 'out';
+  static const String realTimeMeter = 'realtime_meter';
+  static const String active = 'active';
+  static const String fromMax = 'from_max';
+  static const String activeDevices = 'active_devices';
+  static const String peakPeriod = 'peak_period';
+  static const String showAll = 'show_all';
+  static const String weeklyConsumption = 'weekly_consumption';
+
+  // Profile
+  static const String account = 'account';
+  static const String verifiedAccount = 'verified_account';
+  static const String daysWithUs = 'days_with_us';
+  static const String co2Savings = 'co2_savings';
+  static const String ton = 'ton';
+  static const String kilo = 'kilo';
+  static const String profile = 'profile';
+  static const String notifications = 'notifications';
+  static const String smartReminders = 'smart_reminders';
+  static const String language = 'language';
+  static const String helpSupport = 'help_support';
+  static const String helpCenter = 'help_center';
+  static const String rateUs = 'rate_us';
+  static const String shareApp = 'share_app';
+  static const String about = 'about';
 
   // Miscellaneous
   static const String and = 'and';

@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -7,9 +8,12 @@ import 'package:volty/components/general/my_loading_indicator.dart';
 import 'package:volty/components/general/snackbar.dart';
 import 'package:volty/models/device_model.dart';
 import 'package:volty/src/app_globals.dart';
+import 'package:volty/src/app_localization.dart';
+import 'package:volty/src/app_string.dart';
 
 import '../../components/general/refresh.dart';
 import '../../enums/devices_types_enum.dart';
+import '../../src/app_colors.dart';
 
 class DevicesScreen extends StatefulWidget {
   const DevicesScreen({super.key});
@@ -45,7 +49,7 @@ class _DevicesScreenState extends State<DevicesScreen> {
 
         if (AppGlobals.devicesModel == null) {
           return Center(
-            child: CircularProgressIndicator(color: const Color(0xFFB8FF57)),
+            child: CircularProgressIndicator(color: AppColors.primary),
           );
         }
 
@@ -55,16 +59,16 @@ class _DevicesScreenState extends State<DevicesScreen> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Icon(Icons.error_outline, size: 64, color: Colors.grey),
-                const SizedBox(height: 16),
+                SizedBox(height: 16),
                 Text(
-                  'حدث خطأ في تحميل البيانات',
+                  AppString.noData.tr(),
                   style: TextStyle(color: Colors.grey[400], fontSize: 16),
                 ),
-                const SizedBox(height: 16),
+                SizedBox(height: 16),
                 ElevatedButton(
                   onPressed: () => context.read<DevicesCubit>().fetchDevices(),
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: const Color(0xFFB8FF57),
+                    backgroundColor: AppColors.primary,
                   ),
                   child: Text(
                     'إعادة المحاولة',
@@ -81,22 +85,22 @@ class _DevicesScreenState extends State<DevicesScreen> {
           child: SingleChildScrollView(
             physics: AlwaysScrollableScrollPhysics(),
             child: Padding(
-              padding: const EdgeInsets.all(20.0),
+              padding: EdgeInsets.all(20.0),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   _buildHeader(),
-                  const SizedBox(height: 25),
+                  SizedBox(height: 25),
                   if (_showAIInsights && rooms.isNotEmpty) ...[
                     _buildAIInsightBanner(rooms),
-                    const SizedBox(height: 20),
+                    SizedBox(height: 20),
                   ],
                   if (rooms.isEmpty) ...[
                     _buildEmptyState(),
                   ] else ...[
                     ...rooms.map(
                       (room) => Padding(
-                        padding: const EdgeInsets.only(bottom: 20),
+                        padding: EdgeInsets.only(bottom: 20),
                         child: _buildRoomSection(room),
                       ),
                     ),
@@ -117,29 +121,29 @@ class _DevicesScreenState extends State<DevicesScreen> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          'الأجهزة',
+          AppString.devicesTitle.tr(),
           style: TextStyle(
             color: Colors.white,
             fontSize: 32,
             fontWeight: FontWeight.bold,
           ),
         ),
-        const SizedBox(height: 8),
+        SizedBox(height: 8),
         Text(
-          'إدارة جميع الأجهزة الذكية',
+          AppString.devicesSubtitle.tr(),
           style: TextStyle(color: Colors.grey[400], fontSize: 15),
         ),
-        const SizedBox(height: 12),
+        SizedBox(height: 12),
         Row(
           children: [
             _buildStatCard(
-              'الغرف',
+              AppString.rooms.tr(),
               AppGlobals.devicesModel!.roomsCount.toString(),
               Icons.room_rounded,
             ),
-            const SizedBox(width: 12),
+            SizedBox(width: 12),
             _buildStatCard(
-              'الأجهزة',
+              AppString.devicesTitle.tr(),
               '${AppGlobals.devicesModel!.devicesCount}/${AppGlobals.devicesModel!.activeCount}',
               Icons.devices_rounded,
             ),
@@ -152,23 +156,23 @@ class _DevicesScreenState extends State<DevicesScreen> {
   Widget _buildStatCard(String label, String value, IconData icon) {
     return Expanded(
       child: Container(
-        padding: const EdgeInsets.all(16),
+        padding: EdgeInsets.all(16),
         decoration: BoxDecoration(
-          color: const Color(0xFF1E2538),
+          color: Color(0xFF1E2538),
           borderRadius: BorderRadius.circular(16),
-          border: Border.all(color: const Color(0xFF2D3548)),
+          border: Border.all(color: Color(0xFF2D3548)),
         ),
         child: Row(
           children: [
             Container(
-              padding: const EdgeInsets.all(10),
+              padding: EdgeInsets.all(10),
               decoration: BoxDecoration(
-                color: const Color(0xFFB8FF57).withOpacity(0.15),
+                color: AppColors.primary.withOpacity(0.15),
                 borderRadius: BorderRadius.circular(12),
               ),
-              child: Icon(icon, color: const Color(0xFFB8FF57), size: 20),
+              child: Icon(icon, color: AppColors.primary, size: 20),
             ),
-            const SizedBox(width: 12),
+            SizedBox(width: 12),
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -176,7 +180,7 @@ class _DevicesScreenState extends State<DevicesScreen> {
                   label,
                   style: TextStyle(color: Colors.grey[400], fontSize: 12),
                 ),
-                const SizedBox(height: 4),
+                SizedBox(height: 4),
                 Text(
                   value,
                   style: TextStyle(
@@ -196,11 +200,11 @@ class _DevicesScreenState extends State<DevicesScreen> {
   Widget _buildEmptyState() {
     return Center(
       child: Padding(
-        padding: const EdgeInsets.symmetric(vertical: 60),
+        padding: EdgeInsets.symmetric(vertical: 60),
         child: Column(
           children: [
             Icon(Icons.home_work_outlined, size: 80, color: Colors.grey[600]),
-            const SizedBox(height: 20),
+            SizedBox(height: 20),
             Text(
               'لا توجد غرف حتى الآن',
               style: TextStyle(
@@ -209,9 +213,9 @@ class _DevicesScreenState extends State<DevicesScreen> {
                 fontWeight: FontWeight.w600,
               ),
             ),
-            const SizedBox(height: 8),
+            SizedBox(height: 8),
             Text(
-              'ابدأ بإضافة غرفة جديدة',
+              AppString.addRoom.tr(),
               style: TextStyle(color: Colors.grey[500], fontSize: 14),
             ),
           ],
@@ -239,32 +243,32 @@ class _DevicesScreenState extends State<DevicesScreen> {
     if (highestUsageDevice == null) return SizedBox.shrink();
 
     return Container(
-      padding: const EdgeInsets.all(20),
+      padding: EdgeInsets.all(20),
       decoration: BoxDecoration(
         gradient: LinearGradient(
           colors: [
-            const Color(0xFF6C63FF).withOpacity(0.2),
-            const Color(0xFF5B54E8).withOpacity(0.1),
+            Color(0xFF6C63FF).withOpacity(0.2),
+            Color(0xFF5B54E8).withOpacity(0.1),
           ],
         ),
         borderRadius: BorderRadius.circular(20),
-        border: Border.all(color: const Color(0xFF6C63FF).withOpacity(0.3)),
+        border: Border.all(color: Color(0xFF6C63FF).withOpacity(0.3)),
       ),
       child: Row(
         children: [
           Container(
-            padding: const EdgeInsets.all(12),
+            padding: EdgeInsets.all(12),
             decoration: BoxDecoration(
-              color: const Color(0xFF6C63FF).withOpacity(0.2),
+              color: Color(0xFF6C63FF).withOpacity(0.2),
               borderRadius: BorderRadius.circular(12),
             ),
             child: Icon(
               Icons.psychology_rounded,
-              color: const Color(0xFF6C63FF),
+              color: Color(0xFF6C63FF),
               size: 28,
             ),
           ),
-          const SizedBox(width: 15),
+          SizedBox(width: 15),
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -277,7 +281,7 @@ class _DevicesScreenState extends State<DevicesScreen> {
                     fontWeight: FontWeight.bold,
                   ),
                 ),
-                const SizedBox(height: 4),
+                SizedBox(height: 4),
                 Text(
                   '${highestUsageDevice.name} في $roomName يستهلك $highestUsage% - يُنصح بمراجعة الاستخدام',
                   style: TextStyle(color: Colors.grey[300], fontSize: 12),
@@ -305,39 +309,35 @@ class _DevicesScreenState extends State<DevicesScreen> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Container(
-          padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 8),
+          padding: EdgeInsets.symmetric(horizontal: 15, vertical: 8),
           decoration: BoxDecoration(
-            color: const Color(0xFF1E2538),
+            color: Color(0xFF1E2538),
             borderRadius: BorderRadius.circular(12),
-            border: Border.all(color: const Color(0xFF2D3548)),
+            border: Border.all(color: Color(0xFF2D3548)),
           ),
           child: Row(
             children: [
-              Icon(
-                Icons.room_rounded,
-                color: const Color(0xFFB8FF57),
-                size: 18,
-              ),
-              const SizedBox(width: 8),
+              Icon(Icons.room_rounded, color: AppColors.primary, size: 18),
+              SizedBox(width: 8),
               Text(
-                room.name ?? 'غرفة',
+                room.name ?? AppString.rooms.tr(),
                 style: TextStyle(
                   color: Colors.white,
                   fontSize: 16,
                   fontWeight: FontWeight.bold,
                 ),
               ),
-              const SizedBox(width: 8),
+              SizedBox(width: 8),
               Container(
-                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
+                padding: EdgeInsets.symmetric(horizontal: 8, vertical: 2),
                 decoration: BoxDecoration(
-                  color: const Color(0xFFB8FF57).withOpacity(0.2),
+                  color: AppColors.primary.withOpacity(0.2),
                   borderRadius: BorderRadius.circular(8),
                 ),
                 child: Text(
                   '${room.activeCount}/${room.totalCount}',
                   style: TextStyle(
-                    color: const Color(0xFFB8FF57),
+                    color: AppColors.primary,
                     fontSize: 11,
                     fontWeight: FontWeight.bold,
                   ),
@@ -346,7 +346,7 @@ class _DevicesScreenState extends State<DevicesScreen> {
               Spacer(),
               PopupMenuButton<String>(
                 icon: Icon(Icons.more_vert, color: Colors.grey[400], size: 20),
-                color: const Color(0xFF1E2538),
+                color: Color(0xFF1E2538),
                 onSelected: (value) {
                   if (value == 'edit') {
                     _showEditRoomDialog(room);
@@ -361,14 +361,10 @@ class _DevicesScreenState extends State<DevicesScreen> {
                     value: 'add_device',
                     child: Row(
                       children: [
-                        Icon(
-                          Icons.add,
-                          size: 20,
-                          color: const Color(0xFFB8FF57),
-                        ),
+                        Icon(Icons.add, size: 20, color: AppColors.primary),
                         SizedBox(width: 8),
                         Text(
-                          'إضافة جهاز',
+                          AppString.addDevice.tr(),
                           style: TextStyle(color: Colors.white),
                         ),
                       ],
@@ -381,7 +377,7 @@ class _DevicesScreenState extends State<DevicesScreen> {
                         Icon(Icons.edit, size: 20, color: Colors.grey[400]),
                         SizedBox(width: 8),
                         Text(
-                          'تعديل الغرفة',
+                          AppString.editRoom.tr(),
                           style: TextStyle(color: Colors.white),
                         ),
                       ],
@@ -393,7 +389,10 @@ class _DevicesScreenState extends State<DevicesScreen> {
                       children: [
                         Icon(Icons.delete, size: 20, color: Colors.red),
                         SizedBox(width: 8),
-                        Text('حذف الغرفة', style: TextStyle(color: Colors.red)),
+                        Text(
+                          AppString.deleteRoom.tr(),
+                          style: TextStyle(color: Colors.red),
+                        ),
                       ],
                     ),
                   ),
@@ -402,31 +401,31 @@ class _DevicesScreenState extends State<DevicesScreen> {
             ],
           ),
         ),
-        const SizedBox(height: 12),
+        SizedBox(height: 12),
         if (devices.isEmpty)
           Container(
-            padding: const EdgeInsets.all(30),
+            padding: EdgeInsets.all(30),
             decoration: BoxDecoration(
-              color: const Color(0xFF1E2538),
+              color: Color(0xFF1E2538),
               borderRadius: BorderRadius.circular(20),
-              border: Border.all(color: const Color(0xFF2D3548)),
+              border: Border.all(color: Color(0xFF2D3548)),
             ),
             child: Center(
               child: Column(
                 children: [
                   Icon(Icons.devices_other, size: 40, color: Colors.grey[600]),
-                  const SizedBox(height: 12),
+                  SizedBox(height: 12),
                   Text(
                     'لا توجد أجهزة في هذه الغرفة',
                     style: TextStyle(color: Colors.grey[400], fontSize: 14),
                   ),
-                  const SizedBox(height: 8),
+                  SizedBox(height: 8),
                   TextButton.icon(
                     onPressed: () => _showAddDeviceDialog(room),
                     icon: Icon(Icons.add, size: 18),
-                    label: Text('إضافة جهاز'),
+                    label: Text(AppString.addDevice.tr()),
                     style: TextButton.styleFrom(
-                      foregroundColor: const Color(0xFFB8FF57),
+                      foregroundColor: AppColors.primary,
                     ),
                   ),
                 ],
@@ -436,7 +435,7 @@ class _DevicesScreenState extends State<DevicesScreen> {
         else
           ...devices.map(
             (device) => Padding(
-              padding: const EdgeInsets.only(bottom: 12),
+              padding: EdgeInsets.only(bottom: 12),
               child: _buildDeviceCard(device, room),
             ),
           ),
@@ -446,14 +445,14 @@ class _DevicesScreenState extends State<DevicesScreen> {
 
   Widget _buildDeviceCard(Device device, RoomModel room) {
     return Container(
-      padding: const EdgeInsets.all(20),
+      padding: EdgeInsets.all(20),
       decoration: BoxDecoration(
-        color: const Color(0xFF1E2538),
+        color: Color(0xFF1E2538),
         borderRadius: BorderRadius.circular(20),
         border: Border.all(
           color: device.isOn
-              ? const Color(0xFFB8FF57).withOpacity(0.3)
-              : const Color(0xFF2D3548),
+              ? AppColors.primary.withOpacity(0.3)
+              : Color(0xFF2D3548),
         ),
       ),
       child: Column(
@@ -461,20 +460,20 @@ class _DevicesScreenState extends State<DevicesScreen> {
           Row(
             children: [
               Container(
-                padding: const EdgeInsets.all(14),
+                padding: EdgeInsets.all(14),
                 decoration: BoxDecoration(
                   color: device.isOn
-                      ? const Color(0xFFB8FF57).withOpacity(0.15)
-                      : const Color(0xFF2D3548),
+                      ? AppColors.primary.withOpacity(0.15)
+                      : Color(0xFF2D3548),
                   borderRadius: BorderRadius.circular(15),
                 ),
                 child: Icon(
                   device.icon,
-                  color: device.isOn ? const Color(0xFFB8FF57) : Colors.grey,
+                  color: device.isOn ? AppColors.primary : Colors.grey,
                   size: 28,
                 ),
               ),
-              const SizedBox(width: 15),
+              SizedBox(width: 15),
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -487,22 +486,22 @@ class _DevicesScreenState extends State<DevicesScreen> {
                         fontWeight: FontWeight.w600,
                       ),
                     ),
-                    const SizedBox(height: 6),
+                    SizedBox(height: 6),
                     Row(
                       children: [
                         Icon(Icons.bolt, color: Colors.grey[400], size: 14),
-                        const SizedBox(width: 4),
+                        SizedBox(width: 4),
                         Text(
-                          '${device.kwhValue?.toStringAsFixed(2) ?? '0.0'} ك.و',
+                          '${device.whValue?.toStringAsFixed(2) ?? '0.0'} ${AppString.unit.tr()}',
                           style: TextStyle(
                             color: Colors.grey[400],
                             fontSize: 13,
                           ),
                         ),
                         if (device.isOn) ...[
-                          const SizedBox(width: 12),
+                          SizedBox(width: 12),
                           Container(
-                            padding: const EdgeInsets.symmetric(
+                            padding: EdgeInsets.symmetric(
                               horizontal: 8,
                               vertical: 2,
                             ),
@@ -536,13 +535,13 @@ class _DevicesScreenState extends State<DevicesScreen> {
                     deviceId: device.id!,
                   );
                 },
-                activeColor: const Color(0xFFB8FF57),
-                activeTrackColor: const Color(0xFFB8FF57).withOpacity(0.3),
+                activeColor: AppColors.primary,
+                activeTrackColor: AppColors.primary.withOpacity(0.3),
               ),
             ],
           ),
 
-          const SizedBox(height: 15),
+          SizedBox(height: 15),
 
           Row(
             children: [
@@ -550,11 +549,11 @@ class _DevicesScreenState extends State<DevicesScreen> {
                 child: TextButton.icon(
                   onPressed: () => _showDeviceSettingsDialog(device, room),
                   icon: Icon(Icons.settings, size: 18),
-                  label: Text('إعدادات'),
+                  label: Text(AppString.settings.tr()),
                   style: TextButton.styleFrom(
                     foregroundColor: Colors.grey[300],
-                    backgroundColor: const Color(0xFF2D3548),
-                    padding: const EdgeInsets.symmetric(vertical: 12),
+                    backgroundColor: Color(0xFF2D3548),
+                    padding: EdgeInsets.symmetric(vertical: 12),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(12),
                     ),
@@ -572,12 +571,12 @@ class _DevicesScreenState extends State<DevicesScreen> {
     return InkWell(
       onTap: () => _showAddRoomDialog(),
       child: Container(
-        padding: const EdgeInsets.all(20),
+        padding: EdgeInsets.all(20),
         decoration: BoxDecoration(
-          color: const Color(0xFF1E2538),
+          color: Color(0xFF1E2538),
           borderRadius: BorderRadius.circular(20),
           border: Border.all(
-            color: const Color(0xFFB8FF57).withOpacity(0.3),
+            color: AppColors.primary.withOpacity(0.3),
             style: BorderStyle.solid,
             width: 2,
           ),
@@ -585,12 +584,12 @@ class _DevicesScreenState extends State<DevicesScreen> {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Icon(Icons.add_circle_outline, color: const Color(0xFFB8FF57)),
-            const SizedBox(width: 10),
+            Icon(Icons.add_circle_outline, color: AppColors.primary),
+            SizedBox(width: 10),
             Text(
-              'إضافة غرفة جديدة',
+              AppString.addRoom.tr(),
               style: TextStyle(
-                color: const Color(0xFFB8FF57),
+                color: AppColors.primary,
                 fontSize: 16,
                 fontWeight: FontWeight.bold,
               ),
@@ -602,9 +601,9 @@ class _DevicesScreenState extends State<DevicesScreen> {
   }
 
   Color _getUsageColor(int usage) {
-    if (usage >= 80) return const Color(0xFFFF6B6B);
-    if (usage >= 50) return const Color(0xFFFFB84D);
-    return const Color(0xFF4ECDC4);
+    if (usage >= 80) return Color(0xFFFF6B6B);
+    if (usage >= 50) return Color(0xFFFFB84D);
+    return Color(0xFF4ECDC4);
   }
 
   // Dialog Methods
@@ -613,22 +612,25 @@ class _DevicesScreenState extends State<DevicesScreen> {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        backgroundColor: const Color(0xFF1E2538),
+        backgroundColor: Color(0xFF1E2538),
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-        title: Text('إضافة غرفة جديدة', style: TextStyle(color: Colors.white)),
+        title: Text(
+          AppString.addRoom.tr(),
+          style: TextStyle(color: Colors.white),
+        ),
         content: TextField(
           controller: cubit.nameCont,
           autofocus: true,
           decoration: InputDecoration(
-            hintText: 'اسم الغرفة',
+            hintText: AppString.roomName.tr(),
             hintStyle: TextStyle(color: Colors.grey),
             enabledBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(12),
-              borderSide: BorderSide(color: const Color(0xFF2D3548)),
+              borderSide: BorderSide(color: Color(0xFF2D3548)),
             ),
             focusedBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(12),
-              borderSide: BorderSide(color: const Color(0xFFB8FF57)),
+              borderSide: BorderSide(color: AppColors.primary),
             ),
           ),
           style: TextStyle(color: Colors.white),
@@ -646,7 +648,7 @@ class _DevicesScreenState extends State<DevicesScreen> {
               }
             },
             style: ElevatedButton.styleFrom(
-              backgroundColor: const Color(0xFFB8FF57),
+              backgroundColor: AppColors.primary,
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(12),
               ),
@@ -669,22 +671,25 @@ class _DevicesScreenState extends State<DevicesScreen> {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        backgroundColor: const Color(0xFF1E2538),
+        backgroundColor: Color(0xFF1E2538),
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-        title: Text('تعديل الغرفة', style: TextStyle(color: Colors.white)),
+        title: Text(
+          AppString.editRoom.tr(),
+          style: TextStyle(color: Colors.white),
+        ),
         content: TextField(
           controller: cubit.nameCont,
           autofocus: true,
           decoration: InputDecoration(
-            hintText: 'اسم الغرفة',
+            hintText: AppString.roomName.tr(),
             hintStyle: TextStyle(color: Colors.grey),
             enabledBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(12),
-              borderSide: BorderSide(color: const Color(0xFF2D3548)),
+              borderSide: BorderSide(color: Color(0xFF2D3548)),
             ),
             focusedBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(12),
-              borderSide: BorderSide(color: const Color(0xFFB8FF57)),
+              borderSide: BorderSide(color: AppColors.primary),
             ),
           ),
           style: TextStyle(color: Colors.white),
@@ -692,7 +697,10 @@ class _DevicesScreenState extends State<DevicesScreen> {
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context),
-            child: Text('إلغاء', style: TextStyle(color: Colors.grey)),
+            child: Text(
+              AppString.cancel.tr(),
+              style: TextStyle(color: Colors.grey),
+            ),
           ),
           ElevatedButton(
             onPressed: () {
@@ -702,13 +710,13 @@ class _DevicesScreenState extends State<DevicesScreen> {
               }
             },
             style: ElevatedButton.styleFrom(
-              backgroundColor: const Color(0xFFB8FF57),
+              backgroundColor: AppColors.primary,
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(12),
               ),
             ),
             child: Text(
-              'حفظ',
+              AppString.okay.tr(),
               style: TextStyle(
                 color: Colors.black,
                 fontWeight: FontWeight.bold,
@@ -724,9 +732,12 @@ class _DevicesScreenState extends State<DevicesScreen> {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        backgroundColor: const Color(0xFF1E2538),
+        backgroundColor: Color(0xFF1E2538),
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-        title: Text('حذف الغرفة', style: TextStyle(color: Colors.white)),
+        title: Text(
+          AppString.deleteRoom.tr(),
+          style: TextStyle(color: Colors.white),
+        ),
         content: Text(
           'هل أنت متأكد من حذف "${room.name}"؟\nسيتم حذف جميع الأجهزة في هذه الغرفة.',
           style: TextStyle(color: Colors.grey[300]),
@@ -734,7 +745,10 @@ class _DevicesScreenState extends State<DevicesScreen> {
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context),
-            child: Text('إلغاء', style: TextStyle(color: Colors.grey)),
+            child: Text(
+              AppString.cancel.tr(),
+              style: TextStyle(color: Colors.grey),
+            ),
           ),
           ElevatedButton(
             onPressed: () {
@@ -748,7 +762,7 @@ class _DevicesScreenState extends State<DevicesScreen> {
               ),
             ),
             child: Text(
-              'حذف',
+              AppString.delete.tr(),
               style: TextStyle(
                 color: Colors.white,
                 fontWeight: FontWeight.bold,
@@ -767,11 +781,14 @@ class _DevicesScreenState extends State<DevicesScreen> {
       context: context,
       builder: (context) => StatefulBuilder(
         builder: (context, setDialogState) => AlertDialog(
-          backgroundColor: const Color(0xFF1E2538),
+          backgroundColor: Color(0xFF1E2538),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(20),
           ),
-          title: Text('إضافة جهاز جديد', style: TextStyle(color: Colors.white)),
+          title: Text(
+            AppString.addDevice.tr(),
+            style: TextStyle(color: Colors.white),
+          ),
           content: SingleChildScrollView(
             child: Column(
               mainAxisSize: MainAxisSize.min,
@@ -779,31 +796,31 @@ class _DevicesScreenState extends State<DevicesScreen> {
                 DropdownButtonFormField<DeviceTypes>(
                   value: cubit.selectedType,
                   decoration: InputDecoration(
-                    labelText: 'نوع الجهاز',
+                    labelText: AppString.deviceType.tr(),
                     labelStyle: TextStyle(color: Colors.grey),
                     enabledBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(12),
-                      borderSide: BorderSide(color: const Color(0xFF2D3548)),
+                      borderSide: BorderSide(color: Color(0xFF2D3548)),
                     ),
                     focusedBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(12),
-                      borderSide: BorderSide(color: const Color(0xFFB8FF57)),
+                      borderSide: BorderSide(color: AppColors.primary),
                     ),
                   ),
-                  dropdownColor: const Color(0xFF1E2538),
+                  dropdownColor: Color(0xFF1E2538),
                   style: TextStyle(color: Colors.white),
                   items: DeviceTypes.values.map((type) {
                     return DropdownMenuItem(
                       value: type,
                       child: Row(
                         children: [
-                          Icon(
-                            type.icon,
-                            size: 20,
-                            color: const Color(0xFFB8FF57),
-                          ),
+                          Icon(type.icon, size: 20, color: AppColors.primary),
                           SizedBox(width: 10),
-                          Text(type.ar),
+                          Text(
+                            AppLocalization.isArabic(context)
+                                ? type.ar
+                                : type.en,
+                          ),
                         ],
                       ),
                     );
@@ -814,26 +831,28 @@ class _DevicesScreenState extends State<DevicesScreen> {
                     });
                   },
                 ),
-                const SizedBox(height: 16),
+                SizedBox(height: 16),
                 TextField(
                   controller: cubit.nameCont,
                   decoration: InputDecoration(
-                    labelText: 'اسم الجهاز (اختياري)',
-                    hintText: 'اترك فارغاً لاستخدام الاسم الافتراضي',
+                    labelText: AppString.deviceName.tr(),
+                    hintText: AppLocalization.isArabic(context)
+                        ? "مثال: ثلاجة"
+                        : "e.g. Fridge",
                     labelStyle: TextStyle(color: Colors.grey),
                     hintStyle: TextStyle(color: Colors.grey[600], fontSize: 12),
                     enabledBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(12),
-                      borderSide: BorderSide(color: const Color(0xFF2D3548)),
+                      borderSide: BorderSide(color: Color(0xFF2D3548)),
                     ),
                     focusedBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(12),
-                      borderSide: BorderSide(color: const Color(0xFFB8FF57)),
+                      borderSide: BorderSide(color: AppColors.primary),
                     ),
                   ),
                   style: TextStyle(color: Colors.white),
                 ),
-                const SizedBox(height: 16),
+                SizedBox(height: 16),
                 TextField(
                   controller: cubit.kwhCont,
                   inputFormatters: [
@@ -843,18 +862,19 @@ class _DevicesScreenState extends State<DevicesScreen> {
                   ],
                   keyboardType: TextInputType.numberWithOptions(decimal: true),
                   decoration: InputDecoration(
-                    labelText: 'استهلاك الطاقة (كيلوواط)',
-                    hintText: '2.5',
+                    labelText:
+                        '${AppString.powerConsumption.tr()} (${AppString.unit.tr()})',
+                    hintText: '12',
 
                     labelStyle: TextStyle(color: Colors.grey),
                     hintStyle: TextStyle(color: Colors.grey[600]),
                     enabledBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(12),
-                      borderSide: BorderSide(color: const Color(0xFF2D3548)),
+                      borderSide: BorderSide(color: Color(0xFF2D3548)),
                     ),
                     focusedBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(12),
-                      borderSide: BorderSide(color: const Color(0xFFB8FF57)),
+                      borderSide: BorderSide(color: AppColors.primary),
                     ),
                   ),
                   style: TextStyle(color: Colors.white),
@@ -865,7 +885,10 @@ class _DevicesScreenState extends State<DevicesScreen> {
           actions: [
             TextButton(
               onPressed: () => Navigator.pop(context),
-              child: Text('إلغاء', style: TextStyle(color: Colors.grey)),
+              child: Text(
+                AppString.cancel.tr(),
+                style: TextStyle(color: Colors.grey),
+              ),
             ),
             ElevatedButton(
               onPressed: () {
@@ -876,13 +899,13 @@ class _DevicesScreenState extends State<DevicesScreen> {
                 }
               },
               style: ElevatedButton.styleFrom(
-                backgroundColor: const Color(0xFFB8FF57),
+                backgroundColor: AppColors.primary,
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(12),
                 ),
               ),
               child: Text(
-                'إضافة',
+                AppString.add.tr(),
                 style: TextStyle(
                   color: Colors.black,
                   fontWeight: FontWeight.bold,
@@ -898,14 +921,17 @@ class _DevicesScreenState extends State<DevicesScreen> {
   void _showDeviceSettingsDialog(Device device, RoomModel room) {
     var cubit = context.read<DevicesCubit>();
     cubit.nameCont.text = device.name!;
-    cubit.kwhCont.text = device.kwhValue.toString();
+    cubit.kwhCont.text = device.whValue.toString();
 
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        backgroundColor: const Color(0xFF1E2538),
+        backgroundColor: Color(0xFF1E2538),
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-        title: Text('إعدادات الجهاز', style: TextStyle(color: Colors.white)),
+        title: Text(
+          '${AppString.device.tr()} ${AppString.settings.tr()}',
+          style: TextStyle(color: Colors.white),
+        ),
         content: SingleChildScrollView(
           child: Column(
             mainAxisSize: MainAxisSize.min,
@@ -913,43 +939,47 @@ class _DevicesScreenState extends State<DevicesScreen> {
               TextField(
                 controller: cubit.nameCont,
                 decoration: InputDecoration(
-                  labelText: 'اسم الجهاز',
+                  labelText: AppString.deviceName.tr(),
                   labelStyle: TextStyle(color: Colors.grey),
                   enabledBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(12),
-                    borderSide: BorderSide(color: const Color(0xFF2D3548)),
+                    borderSide: BorderSide(color: Color(0xFF2D3548)),
                   ),
                   focusedBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(12),
-                    borderSide: BorderSide(color: const Color(0xFFB8FF57)),
+                    borderSide: BorderSide(color: AppColors.primary),
                   ),
                 ),
                 style: TextStyle(color: Colors.white),
               ),
-              const SizedBox(height: 16),
+              SizedBox(height: 16),
               TextField(
                 controller: cubit.kwhCont,
                 keyboardType: TextInputType.numberWithOptions(decimal: true),
                 decoration: InputDecoration(
-                  labelText: 'استهلاك الطاقة (كيلوواط)',
+                  labelText:
+                      '${AppString.powerConsumption.tr()} (${AppString.unit.tr()})',
                   labelStyle: TextStyle(color: Colors.grey),
                   enabledBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(12),
-                    borderSide: BorderSide(color: const Color(0xFF2D3548)),
+                    borderSide: BorderSide(color: Color(0xFF2D3548)),
                   ),
                   focusedBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(12),
-                    borderSide: BorderSide(color: const Color(0xFFB8FF57)),
+                    borderSide: BorderSide(color: AppColors.primary),
                   ),
                 ),
                 style: TextStyle(color: Colors.white),
               ),
-              const SizedBox(height: 20),
-              Divider(color: const Color(0xFF2D3548)),
-              const SizedBox(height: 10),
+              SizedBox(height: 20),
+              Divider(color: Color(0xFF2D3548)),
+              SizedBox(height: 10),
               ListTile(
                 leading: Icon(Icons.delete, color: Colors.red),
-                title: Text('حذف الجهاز', style: TextStyle(color: Colors.red)),
+                title: Text(
+                  AppString.delete.tr(),
+                  style: TextStyle(color: Colors.red),
+                ),
                 onTap: () {
                   Navigator.pop(context);
                   _showDeleteDeviceDialog(device, room);
@@ -961,12 +991,14 @@ class _DevicesScreenState extends State<DevicesScreen> {
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context),
-            child: Text('إلغاء', style: TextStyle(color: Colors.grey)),
+            child: Text(
+              AppString.cancel.tr(),
+              style: TextStyle(color: Colors.grey),
+            ),
           ),
           ElevatedButton(
             onPressed: () {
-              final kwh =
-                  double.tryParse(cubit.kwhCont.text) ?? device.kwhValue;
+              final kwh = double.tryParse(cubit.kwhCont.text) ?? device.whValue;
               if (cubit.nameCont.text.isNotEmpty && kwh != null) {
                 context.read<DevicesCubit>().manageDevice(
                   deviceId: device.id!,
@@ -976,13 +1008,13 @@ class _DevicesScreenState extends State<DevicesScreen> {
               }
             },
             style: ElevatedButton.styleFrom(
-              backgroundColor: const Color(0xFFB8FF57),
+              backgroundColor: AppColors.primary,
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(12),
               ),
             ),
             child: Text(
-              'حفظ',
+              AppString.okay.tr(),
               style: TextStyle(
                 color: Colors.black,
                 fontWeight: FontWeight.bold,
@@ -998,7 +1030,7 @@ class _DevicesScreenState extends State<DevicesScreen> {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        backgroundColor: const Color(0xFF1E2538),
+        backgroundColor: Color(0xFF1E2538),
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
         title: Text('حذف الجهاز', style: TextStyle(color: Colors.white)),
         content: Text(

@@ -290,15 +290,15 @@ class _ErrorScreenState extends State<ErrorScreen>
             Icon(
               icon,
               color: isPrimary
-                  ? AppColors.backGround
-                  : AppColors.backGround.withOpacity(0.8),
+                  ? AppColors.primary
+                  : AppColors.primary.withOpacity(0.8),
               size: 20,
             ),
             Text(
               text,
               style: TextStyle(
                 fontWeight: isPrimary ? FontWeight.bold : FontWeight.w600,
-                color: AppColors.backGround,
+                color: AppColors.primary,
                 fontSize: 16,
               ),
             ),

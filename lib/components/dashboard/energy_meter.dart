@@ -1,8 +1,11 @@
 import 'dart:math' as math;
 
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:volty/src/app_globals.dart';
+import 'package:volty/src/app_string.dart';
 import '../../src/app_colors.dart';
+import 'meter_paint.dart';
 
 class EnergyCard extends StatefulWidget {
   const EnergyCard({super.key});
@@ -56,7 +59,7 @@ class _EnergyCardState extends State<EnergyCard> {
         border: Border.all(color: const Color(0xFF2D3548)),
         boxShadow: [
           BoxShadow(
-            color: const Color(0xFFB8FF57).withOpacity(0.1),
+            color: AppColors.primary.withOpacity(0.1),
             blurRadius: 30,
             offset: const Offset(0, 15),
           ),
@@ -71,7 +74,7 @@ class _EnergyCardState extends State<EnergyCard> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    'عداد الطاقة اللحظي',
+                    AppString.realTimeMeter.tr(),
                     style: TextStyle(
                       color: Colors.white,
                       fontSize: 16,
@@ -80,7 +83,7 @@ class _EnergyCardState extends State<EnergyCard> {
                   ),
                   const SizedBox(height: 5),
                   Text(
-                    'تحديث مستمر',
+                    AppString.continuousUpdate.tr(),
                     style: TextStyle(color: Colors.grey[400], fontSize: 12),
                   ),
                 ],
@@ -125,7 +128,7 @@ class _EnergyCardState extends State<EnergyCard> {
                     ),
                     const SizedBox(width: 6),
                     Text(
-                      'نشط',
+                      AppString.active.tr(),
                       style: TextStyle(
                         color: AppColors.primary.withOpacity(
                           AppGlobals.dashModel!.loadPercentage! > 0 ? 1 : 0.3,
@@ -154,22 +157,22 @@ class _EnergyCardState extends State<EnergyCard> {
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
                 _buildMeterInfo(
-                  'الاستهلاك الآن',
-                  '${AppGlobals.dashModel!.currentKwhRate?.toStringAsFixed(2) ?? 0} ك.و',
+                  AppString.liveConsumption.tr(),
+                  '${((AppGlobals.dashModel!.currentWHRate ?? 0) / 1000).toStringAsFixed(2)} ${AppString.unitK.tr()}',
                   Icons.bolt,
-                  const Color(0xFFB8FF57),
+                  AppColors.primary,
                 ),
                 Container(width: 1, height: 40, color: const Color(0xFF2D3548)),
                 _buildMeterInfo(
-                  'اليوم',
-                  '${AppGlobals.dashModel!.todayKwhConsumption?.toStringAsFixed(2) ?? 0} ك.و',
+                  AppString.today.tr(),
+                  '${((AppGlobals.dashModel!.todayWHConsumption ?? 0) / 1000).toStringAsFixed(2)}  ${AppString.unitK.tr()}',
                   Icons.today,
                   const Color(0xFF4ECDC4),
                 ),
                 Container(width: 1, height: 40, color: const Color(0xFF2D3548)),
                 _buildMeterInfo(
-                  'الذروة',
-                  '${AppGlobals.dashModel!.todakKwhPeak?.toStringAsFixed(2) ?? 0} ك.و',
+                  AppString.peak.tr(),
+                  '${((AppGlobals.dashModel!.todakWHPeak ?? 0) / 1000).toStringAsFixed(2)}  ${AppString.unitK.tr()}',
                   Icons.trending_up,
                   const Color(0xFFFF6B6B),
                 ),
@@ -210,132 +213,5 @@ class _EnergyCardState extends State<EnergyCard> {
         ),
       ],
     );
-  }
-}
-
-class EnergyMeterPainter extends CustomPainter {
-  final double progress;
-
-  EnergyMeterPainter({required this.progress});
-
-  @override
-  void paint(Canvas canvas, Size size) {
-    final center = Offset(size.width / 2, size.height / 2);
-    final radius = size.width / 2 - 25;
-
-    // Clamp progress to 0-1 range
-    final clampedProgress = progress.clamp(0.0, 1.0);
-
-    // Background circle
-    final bgPaint = Paint()
-      ..color = const Color(0xFF2D3548)
-      ..style = PaintingStyle.stroke
-      ..strokeWidth = 22
-      ..strokeCap = StrokeCap.round;
-
-    canvas.drawCircle(center, radius, bgPaint);
-
-    // Progress arc with gradient
-    final progressPaint = Paint()
-      ..shader = SweepGradient(
-        colors: clampedProgress > 0.8
-            ? [
-                AppColors.red.withOpacity(0.6),
-                AppColors.red,
-                AppColors.red.withOpacity(0.6),
-              ]
-            : [
-                const Color(0xFFB8FF57).withOpacity(0.6),
-                const Color(0xFF8FD63F),
-                const Color(0xFFB8FF57).withOpacity(0.6),
-              ],
-        startAngle: -math.pi / 2,
-        endAngle: math.pi * 1.5,
-      ).createShader(Rect.fromCircle(center: center, radius: radius))
-      ..style = PaintingStyle.stroke
-      ..strokeWidth = 22
-      ..strokeCap = StrokeCap.round;
-
-    final sweepAngle = 2 * math.pi * clampedProgress;
-    canvas.drawArc(
-      Rect.fromCircle(center: center, radius: radius),
-      -math.pi / 2,
-      sweepAngle,
-      false,
-      progressPaint,
-    );
-
-    // Center text - Convert to percentage (0-100)
-    final percentageValue = (clampedProgress * 100).clamp(0.0, 100.0);
-
-    final textPainter = TextPainter(
-      text: TextSpan(
-        children: [
-          TextSpan(
-            text: percentageValue >= 10
-                ? percentageValue.toStringAsFixed(0)
-                : percentageValue.toStringAsFixed(1),
-            style: TextStyle(
-              color: Colors.white,
-              fontSize: 33,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-          TextSpan(
-            text: '%',
-            style: TextStyle(
-              color: const Color(0xFFB8FF57),
-              fontSize: 22,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-        ],
-      ),
-      textDirection: TextDirection.ltr,
-    );
-
-    textPainter.layout();
-    textPainter.paint(
-      canvas,
-      Offset(
-        center.dx - textPainter.width / 2,
-        center.dy - textPainter.height / 2 - 10,
-      ),
-    );
-
-    // Subtitle
-    final subtitlePainter = TextPainter(
-      text: TextSpan(
-        text: 'من الحد الأقصى',
-        style: TextStyle(color: Colors.grey[400], fontSize: 12),
-      ),
-      textDirection: TextDirection.rtl,
-    );
-
-    subtitlePainter.layout();
-    subtitlePainter.paint(
-      canvas,
-      Offset(center.dx - subtitlePainter.width / 2, center.dy + 25),
-    );
-
-    // Animated glow effect
-    final glowPaint = Paint()
-      ..color = const Color(0xFFB8FF57).withOpacity(0.3)
-      ..style = PaintingStyle.stroke
-      ..strokeWidth = 22
-      ..maskFilter = MaskFilter.blur(BlurStyle.normal, 10);
-
-    canvas.drawArc(
-      Rect.fromCircle(center: center, radius: radius),
-      -math.pi / 2,
-      sweepAngle,
-      false,
-      glowPaint,
-    );
-  }
-
-  @override
-  bool shouldRepaint(covariant EnergyMeterPainter oldDelegate) {
-    return oldDelegate.progress != progress;
   }
 }

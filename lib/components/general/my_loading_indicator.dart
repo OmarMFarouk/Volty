@@ -33,7 +33,7 @@ class MyLoadingIndicator {
                   widthFactor: 0.6,
                   child: LoadingIndicator(
                     indicatorType: Indicator.ballRotate,
-                    colors: AppColors.secondaryGradient,
+                    colors: AppColors.primaryGradient,
                   ),
                 ),
                 // Image.asset('assets/images/loading.gif'),

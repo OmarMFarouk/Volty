@@ -4,6 +4,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:intl/date_symbol_data_local.dart';
+import 'package:volty/blocs/analytics_bloc/cubit.dart';
 import 'package:volty/blocs/dash_bloc/dash_cubit.dart';
 import 'package:volty/blocs/devices_bloc/cubit.dart';
 import '../views/auth/error_screen.dart';
@@ -32,27 +33,37 @@ class AppPresets {
   }
 
   static Future<bool> initData(BuildContext context) async {
-    await Future.wait([
-      BlocProvider.of<DashCubit>(context).fetchDashboard(),
-      BlocProvider.of<DevicesCubit>(context).fetchDevices(),
-    ]);
-    if (!AppGlobals.isModelsInitialized()) {
-      WidgetsBinding.instance.addPostFrameCallback(
-        (_) => AppNavigator.pushR(
-          context,
-          ErrorScreen(
-            errorMsg: AppGlobals.isModelsInitialized()
-                ? ""
-                : "برجاء تفقد الإتصال بلشبكة",
-            icon: AppGlobals.isModelsInitialized()
-                ? FontAwesomeIcons.tools
-                : Icons.signal_wifi_connected_no_internet_4_sharp,
+    try {
+      await Future.wait([
+        BlocProvider.of<DashCubit>(context).fetchDashboard(),
+        BlocProvider.of<DevicesCubit>(context).fetchDevices(),
+        BlocProvider.of<AnalyticsCubit>(context).fetchAnalytics(),
+      ]);
+      if (!AppGlobals.isModelsInitialized()) {
+        WidgetsBinding.instance.addPostFrameCallback(
+          (_) => AppNavigator.pushR(
+            context,
+            ErrorScreen(
+              errorMsg: AppGlobals.isModelsInitialized()
+                  ? ""
+                  : "برجاء تفقد الإتصال بلشبكة",
+              icon: AppGlobals.isModelsInitialized()
+                  ? FontAwesomeIcons.tools
+                  : Icons.signal_wifi_connected_no_internet_4_sharp,
+            ),
+            NavigatorAnimation.slideAnimation,
           ),
-          NavigatorAnimation.slideAnimation,
-        ),
+        );
+        return false;
+      }
+      return true;
+    } catch (e) {
+      AppNavigator.pushR(
+        context,
+        ErrorScreen(errorMsg: e.toString(), icon: Icons.hourglass_bottom),
+        NavigatorAnimation.slideAnimation,
       );
       return false;
     }
-    return true;
   }
 }
