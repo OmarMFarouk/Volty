@@ -7,6 +7,7 @@ import '../models/dash_model.dart';
 class AppGlobals {
   static User? currentUser;
   static Household? currentHouse;
+  static List<Household>? allHouses;
   static DashModel? dashModel;
   static DevicesModel? devicesModel;
   static AnalyticsModel? analyticsModel;
@@ -15,6 +16,7 @@ class AppGlobals {
     return currentHouse != null &&
         currentUser != null &&
         dashModel != null &&
+        allHouses != null &&
         devicesModel != null;
   }
 }

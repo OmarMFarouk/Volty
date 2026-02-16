@@ -13,10 +13,10 @@ class MetricsCard extends StatelessWidget {
       children: [
         Expanded(
           child: _buildMetricCard(
-            "${AppString.rooms.tr()} ${AppString.active.tr()}",
+            "${AppString.active.tr()} ${AppString.rooms.tr()}",
             AppGlobals.devicesModel!.activeRoomsCount.toString(),
             "${AppString.out.tr()} ${AppGlobals.devicesModel!.roomsCount}",
-            Icons.trending_down_rounded,
+            Icons.meeting_room,
             const Color(0xFF4ECDC4),
           ),
         ),

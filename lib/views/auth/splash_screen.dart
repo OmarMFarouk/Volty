@@ -162,6 +162,12 @@ class _SplashScreenState extends State<SplashScreen>
         }
         AppGlobals.currentUser = User.fromJson(r['user']);
         AppGlobals.currentHouse = Household.fromJson(r['household']);
+        AppGlobals.allHouses = r['houses'] != null
+            ? r['houses'].map<Household>((e) => Household.fromJson(e)).toList()
+            : [];
+        AppGlobals.allHouses = AppGlobals.allHouses
+          ?..sort((a, b) => a.id == AppGlobals.currentHouse!.id ? -1 : 1);
+
         await initData(context);
       }
     });
@@ -418,7 +424,7 @@ class _SplashScreenState extends State<SplashScreen>
                 height: isTablet ? 60 : 50,
                 child: LoadingIndicator(
                   indicatorType: Indicator.ballRotate,
-                  colors: AppColors.primaryGradient,
+                  colors: AppColors.tertiaryGradient,
                   strokeWidth: 2,
                 ),
               ),

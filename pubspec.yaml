@@ -49,6 +49,7 @@ dependencies:
   liquid_pull_to_refresh: ^3.0.1
   webview_flutter: ^4.13.1
   url_launcher: ^6.3.2
+  fluttertoast: ^9.0.0
 
 dev_dependencies:
   flutter_test:

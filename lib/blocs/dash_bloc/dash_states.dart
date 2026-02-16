@@ -1,8 +1,13 @@
+import 'package:easy_localization/easy_localization.dart';
+import 'package:volty/src/app_string.dart';
+
 abstract class DashStates {}
 
 class DashInitial extends DashStates {}
 
-class DashRefresh extends DashStates {}
+class DashRefresh extends DashStates {
+  String msg = AppString.refresh.tr();
+}
 
 class DashLoading extends DashStates {}
 

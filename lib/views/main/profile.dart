@@ -1,11 +1,13 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:volty/components/general/my_toast.dart';
 import 'package:volty/src/app_globals.dart';
 import 'package:volty/src/app_localization.dart';
 import 'package:volty/src/app_navigator.dart';
 import 'package:volty/src/app_secured.dart';
 import 'package:volty/views/auth/index.dart';
 
+import '../../components/profile/modals.dart';
 import '../../src/app_colors.dart';
 import '../../src/app_string.dart';
 
@@ -40,22 +42,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
               _buildStatsCards(),
               SizedBox(height: 25),
               _buildSettingsSection(AppString.settings.tr(), [
-                // Localized
-                SettingItem(
-                  AppString.profile, // Localized
-                  Icons.person_outline_rounded,
-                  () {},
-                ),
-                SettingItem(
-                  AppString.notifications, // Localized
-                  Icons.notifications_outlined,
-                  () {},
-                ),
-                SettingItem(
-                  AppString.smartReminders, // Localized
-                  Icons.notifications_active_outlined,
-                  () {},
-                ),
                 SettingItem(
                   AppString.language, // Localized
                   Icons.language_rounded,
@@ -63,66 +49,24 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 ),
               ]),
               SizedBox(height: 20),
-              // _buildSettingsSection(AppString.energyManagement, [
-              //   // Localized
-              //   SettingItem(
-              //     AppString.autoSavingMode, // Localized
-              //     Icons.eco_outlined,
-              //     () {},
-              //   ),
-              //   SettingItem(
-              //     AppString.scheduling, // Localized
-              //     Icons.schedule_outlined,
-              //     () {},
-              //   ),
-              //   SettingItem(
-              //     AppString.consumptionLimits, // Localized
-              //     Icons.speed_outlined,
-              //     () {},
-              //   ),
-              //   SettingItem(
-              //     AppString.solarSettings, // Localized
-              //     Icons.solar_power_outlined,
-              //     () {},
-              //   ),
-              // ]),
-
-              // SizedBox(height: 20),
-              // _buildSettingsSection(AppString.billingAndPayment, [
-              //   // Localized
-              //   SettingItem(
-              //     AppString.paymentMethods, // Localized
-              //     Icons.payment_rounded,
-              //     () {},
-              //   ),
-              //   SettingItem(
-              //     AppString.billingHistory, // Localized
-              //     Icons.receipt_long_rounded,
-              //     () {},
-              //   ),
-              //   SettingItem(
-              //     AppString.subscriptions, // Localized
-              //     Icons.card_membership_rounded,
-              //     () {},
-              //   ),
-              // ]),
-              // SizedBox(height: 20),
               _buildSettingsSection(AppString.helpSupport.tr(), [
                 // Localized
                 SettingItem(
                   AppString.helpCenter.tr(), // Localized
                   Icons.help_outline_rounded,
-                  () {},
+                  () => ProfileModalsHelper.showHelpCenterModal(context),
                 ),
                 SettingItem(
                   AppString.contactUs.tr(), // Localized
                   Icons.contact_support_outlined,
-                  () {},
+                  () => ProfileModalsHelper.showContactUsModal(context),
                 ),
                 SettingItem(
                   AppString.rateUs.tr(), // Localized
                   Icons.star_outline_rounded,
-                  () {},
+                  () {
+                    MyToast.show(context, AppString.rateUs.tr());
+                  },
                 ),
               ]),
               SizedBox(height: 25),
@@ -234,7 +178,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
               ],
             ),
           ),
-          Icon(Icons.edit_outlined, color: Colors.grey[400]),
         ],
       ),
     );

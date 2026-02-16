@@ -13,6 +13,7 @@ class AppString {
 
   // Login / Signup / Welcome
   static const String welcomeMsg = 'welcome_msg';
+  static const String enter = 'enter';
   static const String welcomeNote1 = 'welcome_note_1';
   static const String welcomeNote2 = 'welcome_note_2';
   static const String welcomeNote3 = 'welcome_note_3';
@@ -36,6 +37,7 @@ class AppString {
   static const String reset = 'reset';
   static const String warning = 'warning';
   static const String success = 'success';
+  static const String refresh = 'refresh';
   static const String rememberMe = 'remember_me';
 
   // Signup Form
@@ -76,6 +78,11 @@ class AppString {
   static const String welcomeBack = 'welcome_back';
   static const String today = 'today';
   static const String create = 'create';
+  static const String houseDetails = 'house_details';
+  static const String addNewHouse = 'add_new_house';
+  static const String switchHouse = 'switch_house';
+  static const String myHouses = 'my_houses';
+  static const String houses = 'houses';
 
   // Navigation / Settings
   static const String settings = 'settings';
@@ -91,8 +98,8 @@ class AppString {
   static const String fillMsg = 'fill_msg';
   static const String requiredMsg = 'required_msg';
   static const String required = 'required';
-  static const String invalidFormat = 'invalid_format_msg';
-  static const String sureMsg = 'are_you_sure';
+  static const String invalidFormat = 'invalid_format';
+  static const String sureMsg = 'sure_msg';
 
   // Days
   static const String saturday = 'saturday';
@@ -155,13 +162,15 @@ class AppString {
   static const String costBreakdown = 'cost_breakdown';
   static const String peakHours = 'peak_consumption_hours';
   static const String topConsumingDevices = 'top_consuming_devices';
-  static const String noData = 'no_data_available';
+  static const String noData = 'no_data';
   static const String noActiveDevices = 'no_active_devices';
 
   // Devices
   static const String devicesTitle = 'devices_title';
   static const String devicesSubtitle = 'devices_subtitle';
   static const String rooms = 'rooms';
+  static const String roomsEmpty = 'rooms_empty';
+  static const String devicesEmpty = 'devices_empty';
   static const String addRoom = 'add_room';
   static const String deleteRoom = 'delete_room';
   static const String editRoom = 'edit_room';
@@ -177,7 +186,7 @@ class AppString {
   static const String continuousUpdate = 'continuous_update';
   static const String peak = 'peak';
   static const String out = 'out';
-  static const String realTimeMeter = 'realtime_meter';
+  static const String realTimeMeter = 'real_time_meter';
   static const String active = 'active';
   static const String fromMax = 'from_max';
   static const String activeDevices = 'active_devices';
@@ -201,6 +210,74 @@ class AppString {
   static const String rateUs = 'rate_us';
   static const String shareApp = 'share_app';
   static const String about = 'about';
+
+  // Help Center & Modals (NEW)
+  static const String faq = 'faq';
+  static const String faqTitle = 'faq_title';
+  static const String aboutUs = 'about_us';
+  static const String aboutUsTitle = 'about_us_title';
+  static const String privacyPolicy = 'privacy_policy';
+  static const String privacyPolicySubtitle = 'privacy_policy_subtitle';
+  static const String deleteAccount = 'delete_account';
+  static const String deleteAccountSubtitle = 'delete_account_subtitle';
+  static const String termsOfService = 'terms_of_service';
+  static const String termsOfServiceSubtitle = 'terms_of_service_subtitle';
+  static const String website = 'website';
+  static const String support = 'support';
+  static const String support24 = 'support_24_7';
+  static const String comingSoon = 'coming_soon';
+  static const String learnMoreAbout = 'learn_more_about';
+
+  // About Us Content (NEW)
+  static const String aboutVoltyTitle = 'about_volty_title';
+  static const String aboutVoltySubtitle = 'about_volty_subtitle';
+  static const String aboutVoltyDesc = 'about_volty_desc';
+  static const String keyFeatures = 'key_features';
+  static const String developedBy = 'developed_by';
+  static const String companyDescription = 'company_description';
+  static const String location = 'location';
+  static const String locationValue = 'location_value';
+
+  // Stats (NEW)
+  static const String egyptianHomes = 'egyptian_homes';
+  static const String avgSavings = 'avg_savings';
+  static const String monitoring247 = 'monitoring_24_7';
+
+  // Features (NEW)
+  static const String realtimeMonitoring = 'realtime_monitoring';
+  static const String smartDeviceControl = 'smart_device_control';
+  static const String detailedAnalytics = 'detailed_analytics';
+  static const String egyptianTierCalc = 'egyptian_tier_calc';
+  static const String aiRecommendations = 'ai_recommendations';
+  static const String solarIntegration = 'solar_integration';
+  static const String smartScheduling = 'smart_scheduling';
+  static const String instantAlerts = 'instant_alerts';
+
+  // FAQ Questions & Answers (NEW)
+  static const String faqQ1 = 'faq_q1';
+  static const String faqA1 = 'faq_a1';
+  static const String faqQ2 = 'faq_q2';
+  static const String faqA2 = 'faq_a2';
+  static const String faqQ3 = 'faq_q3';
+  static const String faqA3 = 'faq_a3';
+  static const String faqQ4 = 'faq_q4';
+  static const String faqA4 = 'faq_a4';
+  static const String faqQ5 = 'faq_q5';
+  static const String faqA5 = 'faq_a5';
+  static const String faqQ6 = 'faq_q6';
+  static const String faqA6 = 'faq_a6';
+  static const String faqQ7 = 'faq_q7';
+  static const String faqA7 = 'faq_a7';
+  static const String faqQ8 = 'faq_q8';
+  static const String faqA8 = 'faq_a8';
+  static const String faqQ9 = 'faq_q9';
+  static const String faqA9 = 'faq_a9';
+  static const String faqQ10 = 'faq_q10';
+  static const String faqA10 = 'faq_a10';
+  static const String faqQ11 = 'faq_q11';
+  static const String faqA11 = 'faq_a11';
+  static const String faqQ12 = 'faq_q12';
+  static const String faqA12 = 'faq_a12';
 
   // Miscellaneous
   static const String and = 'and';

@@ -293,8 +293,7 @@ class AnalyticsScreen extends StatelessWidget {
               fontWeight: FontWeight.bold,
             ),
           ),
-          const SizedBox(height: 20),
-
+          if (tiers.isNotEmpty) const SizedBox(height: 20),
           ...tiers.map(
             (tier) => _buildCostItem(
               tier.tierName ?? '',

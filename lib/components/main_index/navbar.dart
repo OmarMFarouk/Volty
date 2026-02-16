@@ -15,6 +15,7 @@ class MyNavBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
+      key: ValueKey(context.locale),
       padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 10),
       margin: const EdgeInsets.symmetric(vertical: 5, horizontal: 25),
       decoration: BoxDecoration(

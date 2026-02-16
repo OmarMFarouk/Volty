@@ -1,8 +1,9 @@
+import 'package:flutter/foundation.dart';
 import 'package:restart_app/restart_app.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import '../../src/app_navigator.dart';
-
+import 'dart:html' as html;
 import '../../src/app_colors.dart';
 import 'index.dart';
 
@@ -258,7 +259,12 @@ class _ErrorScreenState extends State<ErrorScreen>
               AuthIndex(),
               NavigatorAnimation.fadeAnimation,
             )
-          : () => Restart.restartApp(),
+          : () => kIsWeb
+                ? html.window.location.reload()
+                : Future.delayed(
+                    Duration(seconds: 4),
+                    () => Restart.restartApp(),
+                  ),
       child: Container(
         margin: const EdgeInsets.symmetric(horizontal: 20),
         padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 20),
@@ -290,7 +296,7 @@ class _ErrorScreenState extends State<ErrorScreen>
             Icon(
               icon,
               color: isPrimary
-                  ? AppColors.primary
+                  ? AppColors.tertiary
                   : AppColors.primary.withOpacity(0.8),
               size: 20,
             ),
@@ -298,7 +304,7 @@ class _ErrorScreenState extends State<ErrorScreen>
               text,
               style: TextStyle(
                 fontWeight: isPrimary ? FontWeight.bold : FontWeight.w600,
-                color: AppColors.primary,
+                color: AppColors.tertiary,
                 fontSize: 16,
               ),
             ),

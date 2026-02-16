@@ -6,6 +6,8 @@ class Household {
   String? rawAddress;
   String? ownerUID;
   String? currentTemp;
+  int? devicesCount;
+  int? roomsCount;
   String? dateCreated;
   String get houseCity {
     String target = rawAddress?.split('§§')[0] ?? "";
@@ -42,7 +44,17 @@ class Household {
     this.ownerUID,
     this.currentTemp,
     this.dateCreated,
+    this.devicesCount,
+    this.roomsCount,
   });
+  Map<String, dynamic> manageJson() {
+    final Map<String, dynamic> data = <String, dynamic>{};
+    if (id != '0') data['household_id'] = id.toString();
+    data['household_name'] = name;
+    data['household_address'] = rawAddress;
+
+    return data;
+  }
 
   Household.fromJson(Map<String, dynamic> json) {
     id = json['household_id'];
@@ -50,6 +62,8 @@ class Household {
     rawAddress = json['household_address'];
     ownerUID = json['household_ownerId'];
     currentTemp = json['house_temp'].toString();
+    roomsCount = int.tryParse(json['household_roomsCount'].toString()) ?? 0;
+    devicesCount = int.tryParse(json['household_devicesCount'].toString()) ?? 0;
     dateCreated = json['household_dateCreated'];
   }
 }
@@ -59,6 +73,7 @@ class AuthModel {
   String? message;
   User? user;
   Household? household;
+  List<Household>? houses;
 
   AuthModel({this.success, this.message, this.user, this.household});
 
@@ -69,6 +84,12 @@ class AuthModel {
     household = json['household'] != null
         ? Household?.fromJson(json['household'])
         : null;
+    houses = <Household>[];
+    if (json['houses'] != null) {
+      json['houses'].forEach((v) {
+        houses!.add(Household.fromJson(v));
+      });
+    }
   }
 }
 

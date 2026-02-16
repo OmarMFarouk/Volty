@@ -1,8 +1,13 @@
+import 'dart:html' as html;
 import 'package:easy_localization/easy_localization.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:restart_app/restart_app.dart';
 import 'package:volty/blocs/dash_bloc/dash_cubit.dart';
+import 'package:volty/components/general/my_toast.dart';
 import 'package:volty/components/general/refresh.dart';
+import 'package:volty/components/general/snackbar.dart';
 import 'package:volty/src/app_globals.dart';
 import 'package:volty/views/main/index.dart';
 import '../../blocs/dash_bloc/dash_states.dart';
@@ -27,7 +32,31 @@ class DashboardScreen extends StatelessWidget {
         child: Padding(
           padding: const EdgeInsets.all(20.0),
           child: BlocConsumer<DashCubit, DashStates>(
-            listener: (context, state) {},
+            listener: (context, state) {
+              if (state is DashError) {
+                MySnackBar.show(
+                  context: context,
+                  text: state.msg,
+                  isAlert: true,
+                );
+              }
+              if (state is DashSuccess) {
+                MySnackBar.show(
+                  context: context,
+                  text: state.msg,
+                  isAlert: false,
+                );
+              }
+              if (state is DashRefresh) {
+                MyToast.show(context, state.msg);
+                kIsWeb
+                    ? html.window.location.reload()
+                    : Future.delayed(
+                        Duration(seconds: 4),
+                        () => Restart.restartApp(),
+                      );
+              }
+            },
             builder: (context, state) {
               return Column(
                 spacing: 20,
@@ -37,10 +66,12 @@ class DashboardScreen extends StatelessWidget {
                   EnergyCard(),
                   // BalanceCard(),
                   MetricsCard(),
-                  WarningWidget(),
+                  if (AppGlobals.analyticsModel?.peakUsage?.isNotEmpty ?? false)
+                    WarningWidget(),
                   // ActionsCard(),
                   // AiCard(),
-                  _buildActiveDevicesPreview(context),
+                  if (AppGlobals.devicesModel?.devicesCount != 0)
+                    _buildActiveDevicesPreview(context),
                   // _buildEnergySourcesCard(),
                   _buildWeeklyConsumption(),
                   SizedBox(height: kToolbarHeight * 1.5),

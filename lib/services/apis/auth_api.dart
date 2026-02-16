@@ -74,6 +74,7 @@ class AuthApi {
         Uri.parse(AppEndPoints.tokenChecker),
         headers: {"Authorization": "Bearer $token"},
       );
+      log(response.body.toString());
       return jsonDecode(response.body);
     } on Exception catch (e) {
       log("tokenChecker error: $e");

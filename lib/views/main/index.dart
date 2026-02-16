@@ -1,5 +1,6 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:volty/src/app_colors.dart';
 
 import '../../components/general/snackbar.dart';
 import '../../components/main_index/navbar.dart';
@@ -48,7 +49,7 @@ class _MainIndexState extends State<MainIndex> {
       },
       child: Scaffold(
         resizeToAvoidBottomInset: false,
-        backgroundColor: Colors.transparent,
+        backgroundColor: AppColors.backGround,
         body: Stack(
           alignment: Alignment.bottomCenter,
           children: [

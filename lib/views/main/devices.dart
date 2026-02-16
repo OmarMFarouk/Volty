@@ -206,7 +206,7 @@ class _DevicesScreenState extends State<DevicesScreen> {
             Icon(Icons.home_work_outlined, size: 80, color: Colors.grey[600]),
             SizedBox(height: 20),
             Text(
-              'لا توجد غرف حتى الآن',
+              AppString.roomsEmpty.tr(),
               style: TextStyle(
                 color: Colors.grey[400],
                 fontSize: 18,
@@ -416,7 +416,7 @@ class _DevicesScreenState extends State<DevicesScreen> {
                   Icon(Icons.devices_other, size: 40, color: Colors.grey[600]),
                   SizedBox(height: 12),
                   Text(
-                    'لا توجد أجهزة في هذه الغرفة',
+                    AppString.devicesEmpty.tr(),
                     style: TextStyle(color: Colors.grey[400], fontSize: 14),
                   ),
                   SizedBox(height: 8),

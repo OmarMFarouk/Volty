@@ -1,4 +1,8 @@
 class AppEndPoints {
+  static const String website = 'https://volty.barmajha.com';
+  static const String privacy = 'https://volty.barmajha.com/legal/privacy';
+  static const String terms = 'https://volty.barmajha.com/legal/terms';
+  static const String delete = 'https://volty.barmajha.com/legal/delete';
   static const String endPoint = 'https://volty.barmajha.com/backend/public';
 
   // authentication
@@ -17,6 +21,12 @@ class AppEndPoints {
 
   // Analytics
   static const String showAnalytics = '$endPoint/analytics/show_analytics.php';
+
+  // Households
+  static const String manageHousehold =
+      '$endPoint/households/manage_household.php';
+  static const String switchHousehold =
+      '$endPoint/households/switch_household.php';
 
   // Devices & Rooms
   static const String showDevices = '$endPoint/devices/show_devices.php';
