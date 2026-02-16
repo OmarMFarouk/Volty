@@ -1,6 +1,6 @@
 # Volty (Smart Home Energy Management)
 
-Android Project built using flutter framework.
+Android & Web Project built using flutter framework.
 
 ## LOGIC USED IN THIS PROJECT
 . BloC State Management
