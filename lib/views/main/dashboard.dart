@@ -1,9 +1,6 @@
-import 'dart:html' as html;
 import 'package:easy_localization/easy_localization.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:restart_app/restart_app.dart';
 import 'package:volty/blocs/dash_bloc/dash_cubit.dart';
 import 'package:volty/components/general/my_toast.dart';
 import 'package:volty/components/general/refresh.dart';
@@ -18,6 +15,7 @@ import '../../components/general/error_widget.dart';
 
 import '../../components/dashboard/energy_meter.dart';
 import '../../models/device_model.dart';
+import '../../services/web_helper.dart';
 import '../../src/app_colors.dart';
 import '../../src/app_string.dart';
 
@@ -49,12 +47,7 @@ class DashboardScreen extends StatelessWidget {
               }
               if (state is DashRefresh) {
                 MyToast.show(context, state.msg);
-                kIsWeb
-                    ? html.window.location.reload()
-                    : Future.delayed(
-                        Duration(seconds: 4),
-                        () => Restart.restartApp(),
-                      );
+                ReloadHelper.reloadPage();
               }
             },
             builder: (context, state) {

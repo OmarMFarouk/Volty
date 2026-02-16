@@ -2,8 +2,8 @@ import 'dart:async';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:loading_indicator/loading_indicator.dart';
-import 'package:restart_app/restart_app.dart';
 import 'package:volty/models/auth_model.dart';
+import 'package:volty/services/web_helper.dart';
 import 'package:volty/src/app_string.dart';
 import 'package:volty/views/main/index.dart';
 import '../../src/app_globals.dart';
@@ -229,7 +229,7 @@ class _SplashScreenState extends State<SplashScreen>
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         IconButton(
-                          onPressed: () => Restart.restartApp(),
+                          onPressed: () => ReloadHelper.reloadPage(),
                           icon: Row(
                             children: [
                               Text(
