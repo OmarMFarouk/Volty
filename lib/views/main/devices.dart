@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -84,6 +86,7 @@ class _DevicesScreenState extends State<DevicesScreen> {
               await context.read<DevicesCubit>().fetchDevices(),
           child: SingleChildScrollView(
             physics: AlwaysScrollableScrollPhysics(),
+            key: PageStorageKey('devices_scroll'),
             child: Padding(
               padding: EdgeInsets.all(20.0),
               child: Column(
@@ -274,7 +277,7 @@ class _DevicesScreenState extends State<DevicesScreen> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  'رؤية ذكية',
+                  AppString.quickInsights.tr(),
                   style: TextStyle(
                     color: Colors.white,
                     fontSize: 16,
@@ -283,7 +286,9 @@ class _DevicesScreenState extends State<DevicesScreen> {
                 ),
                 SizedBox(height: 4),
                 Text(
-                  '${highestUsageDevice.name} في $roomName يستهلك $highestUsage% - يُنصح بمراجعة الاستخدام',
+                  AppLocalization.isArabic(context)
+                      ? '${highestUsageDevice.name} في $roomName يستهلك ${highestUsage.clamp(0, 1000)}% - يُنصح بمراجعة الاستخدام'
+                      : '${highestUsageDevice.name} at $roomName consumes ${highestUsage.clamp(0, 1000)}% - usage monitoring is recommended',
                   style: TextStyle(color: Colors.grey[300], fontSize: 12),
                 ),
               ],
@@ -489,54 +494,86 @@ class _DevicesScreenState extends State<DevicesScreen> {
                     SizedBox(height: 6),
                     Row(
                       children: [
-                        Icon(Icons.bolt, color: Colors.grey[400], size: 14),
-                        SizedBox(width: 4),
-                        Text(
-                          '${device.whValue?.toStringAsFixed(2) ?? '0.0'} ${AppString.unit.tr()}',
-                          style: TextStyle(
-                            color: Colors.grey[400],
-                            fontSize: 13,
-                          ),
-                        ),
-                        if (device.isOn) ...[
-                          SizedBox(width: 12),
-                          Container(
-                            padding: EdgeInsets.symmetric(
-                              horizontal: 8,
-                              vertical: 2,
-                            ),
-                            decoration: BoxDecoration(
-                              color: _getUsageColor(
-                                device.monthConsumption?.toInt() ?? 0,
-                              ).withOpacity(0.2),
-                              borderRadius: BorderRadius.circular(8),
-                            ),
-                            child: Text(
-                              '${device.deviceLoad.toStringAsFixed(2)}%',
-                              style: TextStyle(
-                                color: _getUsageColor(
-                                  device.monthConsumption?.toInt() ?? 0,
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          spacing: 5,
+                          children: [
+                            Row(
+                              children: [
+                                Icon(
+                                  Icons.bolt,
+                                  color: Colors.grey[400],
+                                  size: 14,
                                 ),
-                                fontSize: 11,
-                                fontWeight: FontWeight.bold,
-                              ),
+                                SizedBox(width: 4),
+                                Text(
+                                  '${device.whValue?.toStringAsFixed(2) ?? '0.0'} ${AppString.unit.tr()}',
+                                  style: TextStyle(
+                                    color: Colors.grey[400],
+                                    fontSize: 13,
+                                  ),
+                                ),
+                              ],
                             ),
-                          ),
-                        ],
+                            if (device.isOn) ...[
+                              Row(
+                                children: [
+                                  Icon(
+                                    Icons.schedule,
+                                    color: Colors.grey[400],
+                                    size: 14,
+                                  ),
+                                  SizedBox(width: 4),
+                                  DeviceUptime(
+                                    initialSeconds: device
+                                        .getCurrentOnDuration(),
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ],
+                        ),
                       ],
                     ),
                   ],
                 ),
               ),
-              Switch(
-                value: device.isOn,
-                onChanged: (value) {
-                  context.read<DevicesCubit>().toggleDevice(
-                    deviceId: device.id!,
-                  );
-                },
-                activeColor: AppColors.primary,
-                activeTrackColor: AppColors.primary.withOpacity(0.3),
+              Column(
+                children: [
+                  if (device.isOn) ...[
+                    Container(
+                      padding: EdgeInsets.symmetric(horizontal: 8, vertical: 2),
+                      decoration: BoxDecoration(
+                        color: _getUsageColor(
+                          device.monthConsumption?.toInt() ?? 0,
+                        ).withOpacity(0.2),
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                      child: Text(
+                        '${device.deviceLoad.toStringAsFixed(2)}%',
+                        style: TextStyle(
+                          color: _getUsageColor(
+                            device.monthConsumption?.toInt() ?? 0,
+                          ),
+                          fontSize: 11,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ),
+                  ],
+
+                  Switch(
+                    value: device.isOn,
+                    onChanged: (value) async {
+                      device.state = !value ? "off" : "on";
+                      await context.read<DevicesCubit>().toggleDevice(
+                        deviceId: device.id!,
+                      );
+                    },
+                    activeColor: AppColors.primary,
+                    activeTrackColor: AppColors.primary.withOpacity(0.3),
+                  ),
+                ],
               ),
             ],
           ),
@@ -1063,6 +1100,67 @@ class _DevicesScreenState extends State<DevicesScreen> {
           ),
         ],
       ),
+    );
+  }
+}
+
+class DeviceUptime extends StatefulWidget {
+  final int initialSeconds; // from backend
+
+  const DeviceUptime({super.key, required this.initialSeconds});
+
+  @override
+  State<DeviceUptime> createState() => _DeviceUptimeState();
+}
+
+class _DeviceUptimeState extends State<DeviceUptime> {
+  late int seconds;
+  Timer? timer;
+
+  @override
+  void initState() {
+    super.initState();
+    seconds = widget.initialSeconds;
+
+    timer = Timer.periodic(const Duration(seconds: 1), (_) {
+      setState(() {
+        seconds++;
+      });
+    });
+  }
+
+  @override
+  void dispose() {
+    timer?.cancel();
+    super.dispose();
+  }
+
+  String onTime(context) {
+    bool isArabic = AppLocalization.isArabic(context);
+    double minutes = (seconds / 60).abs();
+    double hours = minutes / 60;
+    double days = hours / 64;
+    if (days > 1) {
+      return isArabic
+          ? "منذ ${days.toStringAsFixed(2)} يوم"
+          : "Uptime ${days.toStringAsFixed(2)} days";
+    } else if (hours > 1) {
+      return isArabic
+          ? "منذ ${hours.toStringAsFixed(2)} ساعة"
+          : "Uptime ${hours.toStringAsFixed(2)} hours";
+    } else if (minutes > 1) {
+      return isArabic
+          ? "منذ ${minutes.toStringAsFixed(2)} دقيقة"
+          : "Uptime ${minutes.toStringAsFixed(2)} minutes";
+    }
+    return isArabic ? "منذ $seconds ثانية" : "Uptime $seconds seconds";
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Text(
+      onTime(context),
+      style: TextStyle(color: Colors.grey[400], fontSize: 13),
     );
   }
 }

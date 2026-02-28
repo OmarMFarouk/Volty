@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:volty/enums/devices_types_enum.dart';
 import 'package:volty/src/app_globals.dart';
+import 'package:volty/src/app_localization.dart';
 
 class Device {
   int? id;
@@ -20,6 +21,7 @@ class Device {
   double? totalConsumption;
   double? totalUptime;
   double? totalSessions;
+  String? onTimestamp; // New field for the start timestamp
 
   Device({
     this.id = 0,
@@ -39,15 +41,65 @@ class Device {
     this.totalConsumption,
     this.totalUptime,
     this.totalSessions,
+    this.onTimestamp,
   });
+
   String get roomName =>
       AppGlobals.devicesModel!.rooms
           ?.firstWhere((r) => r!.id! == roomId)
           ?.name ??
       "N/A";
+
   double get deviceLoad {
-    double totalLoad = AppGlobals.dashModel?.currentWHRate ?? 1;
-    return (whValue ?? 0) / totalLoad * 100;
+    final total = (AppGlobals.dashModel?.currentWHRate ?? 1);
+    final load = double.parse(
+      (((whValue ?? 0) / (total == 0 ? 1 : total)) * 100).toStringAsFixed(2),
+    );
+    return load > 100 ? 100 : load;
+  }
+
+  // Calculate current on duration from timestamp
+  int getCurrentOnDuration() {
+    if (state != "on" || onTimestamp == null || onTimestamp!.isEmpty) {
+      return 0;
+    }
+
+    try {
+      DateTime startTime = DateTime.parse(onTimestamp!.replaceAll(' ', 'T'));
+      Duration difference = DateTime.now().difference(startTime);
+      return difference.inSeconds;
+    } catch (e) {
+      return 0;
+    }
+  }
+
+  String onTime(context) {
+    bool isArabic = AppLocalization.isArabic(context);
+
+    // Use timestamp if device is on, otherwise use stored onDuration
+    int seconds = 0;
+    if (isOn && onTimestamp != null && onTimestamp!.isNotEmpty) {
+      seconds = getCurrentOnDuration();
+    }
+
+    double minutes = (seconds / 60).abs();
+    double hours = minutes / 60;
+    double days = hours / 24; // Fixed: 24 hours in a day, not 64
+
+    if (days >= 1) {
+      return isArabic
+          ? "منذ ${days.toStringAsFixed(1)} يوم"
+          : "Uptime ${days.toStringAsFixed(1)} days";
+    } else if (hours >= 1) {
+      return isArabic
+          ? "منذ ${hours.toStringAsFixed(1)} ساعة"
+          : "Uptime ${hours.toStringAsFixed(1)} hours";
+    } else if (minutes >= 1) {
+      return isArabic
+          ? "منذ ${minutes.toStringAsFixed(0)} دقيقة"
+          : "Uptime ${minutes.toStringAsFixed(0)} minutes";
+    }
+    return isArabic ? "منذ $seconds ثانية" : "Uptime $seconds seconds";
   }
 
   Device.fromJson(Map<String, dynamic> json) {
@@ -57,6 +109,7 @@ class Device {
     roomId = int.tryParse(json['device_rid'].toString());
     name = json['device_name'];
     state = json['device_state'];
+    onTimestamp = json['device_onTimestamp']; // New field
     createdById = json['device_createdBy'];
     createdByName = json['created_by_username'];
     dateCreated = json['device_dateCreated'];
@@ -72,10 +125,9 @@ class Device {
         double.tryParse(json['total_month_sessions'].toString()) ?? 0;
     totalSessions = double.tryParse(json['total_sessions'].toString()) ?? 0;
   }
+
   IconData get icon => DeviceTypes.getIcon(type);
   bool get isOn => state == "on";
-
-  set toggle(currState) => currState == 'on' ? "off" : "on";
   bool get isOff => state == "off";
 
   Map<String, dynamic> manageJson() {

@@ -83,7 +83,7 @@ class _EnergyCardState extends State<EnergyCard> {
                   ),
                   const SizedBox(height: 5),
                   Text(
-                    "${AppString.continuousUpdate.tr()} - (${AppString.unitK.tr()})",
+                    AppString.continuousUpdate.tr(),
                     style: TextStyle(color: Colors.grey[400], fontSize: 12),
                   ),
                 ],
@@ -160,7 +160,7 @@ class _EnergyCardState extends State<EnergyCard> {
               children: [
                 Expanded(
                   child: _buildMeterInfo(
-                    AppString.liveConsumption.tr(),
+                    "${AppString.liveConsumption.tr()} (${AppString.unitK.tr()})",
                     ((AppGlobals.dashModel!.currentWHRate ?? 0) / 1000)
                         .toStringAsFixed(2),
                     Icons.bolt,
@@ -170,7 +170,7 @@ class _EnergyCardState extends State<EnergyCard> {
                 Container(width: 1, height: 40, color: const Color(0xFF2D3548)),
                 Expanded(
                   child: _buildMeterInfo(
-                    AppString.today.tr(),
+                    "${AppString.today.tr()} (${AppString.unitK.tr()})",
                     ((AppGlobals.dashModel!.todayWHConsumption ?? 0) / 1000)
                         .toStringAsFixed(2),
                     Icons.today,
@@ -180,7 +180,7 @@ class _EnergyCardState extends State<EnergyCard> {
                 Container(width: 1, height: 40, color: const Color(0xFF2D3548)),
                 Expanded(
                   child: _buildMeterInfo(
-                    AppString.peak.tr(),
+                    "${AppString.peak.tr()} (${AppString.unitK.tr()})",
                     ((AppGlobals.dashModel!.todakWHPeak ?? 0) / 1000)
                         .toStringAsFixed(2),
                     Icons.trending_up,

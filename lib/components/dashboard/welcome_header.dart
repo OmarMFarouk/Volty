@@ -1,13 +1,17 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:volty/blocs/dash_bloc/dash_cubit.dart';
 import 'package:volty/models/auth_model.dart';
 import 'package:volty/src/app_colors.dart';
 import 'package:volty/src/app_globals.dart';
 import 'package:volty/src/app_localization.dart';
+import 'package:volty/src/app_navigator.dart';
 import 'package:volty/src/app_string.dart';
 import 'package:volty/components/general/my_field.dart';
+
+import '../../views/main/ai.dart';
 
 class WelcomeHeader extends StatelessWidget {
   const WelcomeHeader({super.key});
@@ -119,39 +123,82 @@ class WelcomeHeader extends StatelessWidget {
         ),
         const SizedBox(width: 10),
 
-        // Notification
-        Container(
-          padding: const EdgeInsets.all(12),
-          decoration: BoxDecoration(
-            color: const Color(0xFF1E2538),
-            borderRadius: BorderRadius.circular(15),
-            border: Border.all(color: const Color(0xFF2D3548)),
-          ),
-          child: Stack(
-            children: [
-              const Icon(
-                Icons.notifications_outlined,
-                color: AppColors.primary,
-                size: 24,
+        // AI
+        Stack(
+          clipBehavior: Clip.none,
+          children: [
+            GestureDetector(
+              onTap: () => AppNavigator.push(
+                context,
+                const AIScreen(),
+                NavigatorAnimation.slideAnimation,
               ),
-              Positioned(
-                right: 0,
-                top: 0,
-                child: Container(
-                  width: 8,
-                  height: 8,
-                  decoration: BoxDecoration(
-                    color: const Color(0xFFFF6B6B),
-                    shape: BoxShape.circle,
-                    border: Border.all(
-                      color: const Color(0xFF1E2538),
-                      width: 1.5,
+              child: Container(
+                padding: const EdgeInsets.all(12),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(15),
+                  border: Border.all(
+                    color: AppColors.primary.withOpacity(0.3),
+                    width: 1.5,
+                  ),
+                  boxShadow: [
+                    BoxShadow(
+                      color: AppColors.primary.withOpacity(0.2),
+                      blurRadius: 8,
+                      spreadRadius: 0,
                     ),
+                  ],
+                ),
+                child: const Icon(
+                  FontAwesomeIcons.brain,
+                  color: AppColors.primary,
+                  size: 24,
+                ),
+              ),
+            ),
+
+            Positioned(
+              right: -2,
+              top: -2,
+              child: Container(
+                padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+                decoration: BoxDecoration(
+                  gradient: LinearGradient(
+                    colors: [
+                      AppColors.primary,
+                      AppColors.primary.withOpacity(0.7),
+                    ],
+                  ),
+                  borderRadius: BorderRadius.circular(8),
+                  boxShadow: [
+                    BoxShadow(
+                      color: AppColors.primary.withOpacity(0.5),
+                      blurRadius: 4,
+                      spreadRadius: 0,
+                    ),
+                  ],
+                  border: Border.all(
+                    color: Colors.white.withOpacity(0.3),
+                    width: 0.5,
+                  ),
+                ),
+                child: Text(
+                  'AI',
+                  style: TextStyle(
+                    color: Colors.black,
+                    fontSize: 9,
+                    fontWeight: FontWeight.bold,
+                    shadows: [
+                      Shadow(
+                        color: Colors.black.withOpacity(0.3),
+                        blurRadius: 2,
+                      ),
+                    ],
                   ),
                 ),
               ),
-            ],
-          ),
+            ),
+          ],
         ),
       ],
     );

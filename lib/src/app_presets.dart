@@ -7,6 +7,7 @@ import 'package:intl/date_symbol_data_local.dart';
 import 'package:volty/blocs/analytics_bloc/cubit.dart';
 import 'package:volty/blocs/dash_bloc/dash_cubit.dart';
 import 'package:volty/blocs/devices_bloc/cubit.dart';
+import '../blocs/ai_bloc/cubit.dart';
 import '../views/auth/error_screen.dart';
 import 'app_globals.dart';
 import 'app_localization.dart';
@@ -38,6 +39,7 @@ class AppPresets {
         BlocProvider.of<DashCubit>(context).fetchDashboard(),
         BlocProvider.of<DevicesCubit>(context).fetchDevices(),
         BlocProvider.of<AnalyticsCubit>(context).fetchAnalytics(),
+        BlocProvider.of<AICubit>(context).fetchAIInsights(),
       ]);
       if (!AppGlobals.isModelsInitialized()) {
         WidgetsBinding.instance.addPostFrameCallback(

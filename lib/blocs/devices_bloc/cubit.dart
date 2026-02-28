@@ -13,8 +13,7 @@ class DevicesCubit extends Cubit<DevicesStates> {
   TextEditingController kwhCont = TextEditingController();
   DeviceTypes selectedType = DeviceTypes.other;
   Future<void> fetchDevices() async {
-    AppGlobals.devicesModel = null;
-    emit(DevicesLoading());
+    emit(DevicesInitial());
     await DevicesApi().fetchDevices().then((r) {
       if (r == null || r.toString().startsWith('error')) {
         emit(DevicesError(msg: 'تحقق من الإتصال بالإنترنت'));
@@ -25,7 +24,6 @@ class DevicesCubit extends Cubit<DevicesStates> {
         emit(DevicesError(msg: r['message']));
       }
     });
-    emit(DevicesLoaded());
   }
 
   Future<void> manageDevice({int deviceId = 0, required int roomId}) async {
@@ -52,18 +50,16 @@ class DevicesCubit extends Cubit<DevicesStates> {
   }
 
   Future<void> toggleDevice({required int deviceId}) async {
-    emit(DevicesLoading());
+    emit(DevicesInitial());
     await DevicesApi().toggleDevice(deviceId).then((r) async {
       if (r == null || r.toString().startsWith('error')) {
         emit(DevicesError(msg: 'تحقق من الإتصال بالإنترنت'));
       } else if (r['success'] == true) {
         await fetchDevices();
-        emit(DevicesSuccess(msg: r['message']));
       } else {
         emit(DevicesError(msg: r['message']));
       }
     });
-    emit(DevicesLoaded());
   }
 
   Future<void> manageRoom({int roomId = 0}) async {

@@ -80,7 +80,9 @@ class DashboardScreen extends StatelessWidget {
   Widget _buildActiveDevicesPreview(BuildContext context) {
     List<Device?> devices =
         AppGlobals.devicesModel?.rooms
-            ?.expand((d) => d?.devices ?? <Device>[])
+            ?.expand(
+              (d) => d?.devices?.where((d) => d?.isOn ?? false) ?? <Device>[],
+            )
             .toList() ??
         [];
 
@@ -117,8 +119,10 @@ class DashboardScreen extends StatelessWidget {
           ],
         ),
         const SizedBox(height: 15),
+        if (devices.where((d) => d?.isOn ?? false).isEmpty)
+          _buildEmptyState(Icons.devices, AppString.devicesEmpty, null),
         ...List.generate(
-          devices.take(5).length,
+          devices.where((d) => d?.isOn ?? false).take(5).length,
           (r) => _buildDevicePreviewCard(
             context,
             devices[r]!,
@@ -177,6 +181,15 @@ class DashboardScreen extends StatelessWidget {
                     fontWeight: FontWeight.w600,
                   ),
                 ),
+                const SizedBox(height: 3),
+                Text(
+                  device.roomName,
+                  style: TextStyle(
+                    color: Colors.white.withOpacity(0.6),
+                    fontSize: 11,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
                 const SizedBox(height: 6),
                 Row(
                   children: [
@@ -186,8 +199,10 @@ class DashboardScreen extends StatelessWidget {
                       "${(device.totalConsumption! / 1000).toStringAsFixed(2)} ${AppString.unitK.tr()}",
                       style: TextStyle(color: Colors.grey[400], fontSize: 13),
                     ),
-                    const SizedBox(width: 15),
-                    if (device.deviceLoad.isFinite)
+
+                    if (device.isOn) ...[
+                      const SizedBox(width: 15),
+                      Spacer(),
                       Container(
                         padding: const EdgeInsets.symmetric(
                           horizontal: 8,
@@ -208,6 +223,7 @@ class DashboardScreen extends StatelessWidget {
                           ),
                         ),
                       ),
+                    ],
                   ],
                 ),
               ],
@@ -216,7 +232,7 @@ class DashboardScreen extends StatelessWidget {
           Switch(
             value: device.isOn,
             onChanged: (value) async {
-              device.state = value == true ? "off" : "on";
+              device.state = !value ? "off" : "on";
               context.read<DashCubit>().refreshState();
               await context.read<DevicesCubit>().toggleDevice(
                 deviceId: device.id!,
@@ -306,12 +322,22 @@ class DashboardScreen extends StatelessWidget {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               crossAxisAlignment: CrossAxisAlignment.end,
+
+              // In _buildWeeklyConsumption, inside the .map():
               children: weeklyData.weeklyData!.map((dayData) {
+                final totalThisWeek = weeklyData.weeklyData!.fold(
+                  0.0,
+                  (sum, d) => sum + (d.consumption ?? 0),
+                );
+                final percentage = totalThisWeek > 0
+                    ? ((dayData.consumption ?? 0) / totalThisWeek) * 100
+                    : 0.0;
                 return _buildChartBar(
                   dayData.day ?? '',
-                  dayData.normalizedValue ?? 0,
+                  (dayData.normalizedValue ?? 0),
                   (dayData.consumption ?? 0) / 1000,
                   dayData.isToday ?? false,
+                  percentage,
                 );
               }).toList(),
             ),
@@ -321,63 +347,83 @@ class DashboardScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildChartBar(String day, double value, double kwh, bool isActive) {
+  Widget _buildChartBar(
+    String day,
+    double value,
+    double kwh,
+    bool isActive,
+    double percentage,
+  ) {
     return Expanded(
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 4),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.end,
-          children: [
-            if (isActive && kwh > 0)
-              Container(
-                padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 3),
-                decoration: BoxDecoration(
-                  color: AppColors.primary,
-                  borderRadius: BorderRadius.circular(8),
-                ),
-                child: Text(
-                  kwh.toStringAsFixed(1),
-                  style: TextStyle(
-                    color: const Color(0xFF0A0E1A),
-                    fontSize: 9,
-                    fontWeight: FontWeight.bold,
+        child: Tooltip(
+          message: '${percentage.toStringAsFixed(1)}%',
+          triggerMode: TooltipTriggerMode.tap,
+          decoration: BoxDecoration(
+            color: AppColors.primary,
+            borderRadius: BorderRadius.circular(8),
+          ),
+          textStyle: const TextStyle(
+            color: Color(0xFF0A0E1A),
+            fontWeight: FontWeight.bold,
+            fontSize: 12,
+          ),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: [
+              if (isActive && kwh > 0)
+                Container(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 6,
+                    vertical: 3,
+                  ),
+                  decoration: BoxDecoration(
+                    color: AppColors.primary,
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                  child: Text(
+                    kwh.toStringAsFixed(1),
+                    style: const TextStyle(
+                      color: Color(0xFF0A0E1A),
+                      fontSize: 9,
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
                 ),
-              ),
-            if (isActive && kwh > 0) const SizedBox(height: 6),
-            Container(
-              height: (value > 0
-                  ? (value.clamp(6.5, 20))
-                  : 0.1), // Minimum height for visibility
-              decoration: BoxDecoration(
-                gradient: LinearGradient(
-                  begin: Alignment.topCenter,
-                  end: Alignment.bottomCenter,
-                  colors: isActive && kwh > 0
-                      ? [AppColors.primary, const Color(0xFF8FD63F)]
-                      : [const Color(0xFF2D3548), const Color(0xFF1E2538)],
+              if (isActive && kwh > 0) const SizedBox(height: 6),
+              Container(
+                height: value > 0 ? (value * 100).clamp(6.5, 100) : 3,
+                decoration: BoxDecoration(
+                  gradient: LinearGradient(
+                    begin: Alignment.topCenter,
+                    end: Alignment.bottomCenter,
+                    colors: isActive
+                        ? [AppColors.primary, const Color(0xFF8FD63F)]
+                        : [const Color(0xFF2D3548), const Color(0xFF1E2538)],
+                  ),
+                  borderRadius: BorderRadius.circular(8),
+                  boxShadow: isActive && kwh > 0
+                      ? [
+                          BoxShadow(
+                            color: AppColors.primary.withOpacity(0.3),
+                            blurRadius: 8,
+                          ),
+                        ]
+                      : null,
                 ),
-                borderRadius: BorderRadius.circular(8),
-                boxShadow: isActive && kwh > 0
-                    ? [
-                        BoxShadow(
-                          color: AppColors.primary.withOpacity(0.3),
-                          blurRadius: 8,
-                        ),
-                      ]
-                    : null,
               ),
-            ),
-            const SizedBox(height: 6),
-            Text(
-              getLocalizedDay(day).substring(0, 3),
-              style: TextStyle(
-                color: isActive ? AppColors.primary : Colors.grey[400],
-                fontSize: 11,
-                fontWeight: FontWeight.bold,
+              const SizedBox(height: 6),
+              Text(
+                getLocalizedDay(day).substring(0, 3),
+                style: TextStyle(
+                  color: isActive ? AppColors.primary : Colors.grey[400],
+                  fontSize: 11,
+                  fontWeight: FontWeight.bold,
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );
@@ -403,4 +449,32 @@ class DashboardScreen extends StatelessWidget {
         return day;
     }
   }
+}
+
+Widget _buildEmptyState(IconData icon, String title, String? subtitle) {
+  return Center(
+    child: Padding(
+      padding: EdgeInsets.symmetric(vertical: 60),
+      child: Column(
+        children: [
+          Icon(icon, size: 80, color: Colors.grey[600]),
+          SizedBox(height: 20),
+          Text(
+            title.tr(),
+            style: TextStyle(
+              color: Colors.grey[400],
+              fontSize: 18,
+              fontWeight: FontWeight.w600,
+            ),
+          ),
+          SizedBox(height: 8),
+          if (subtitle != null)
+            Text(
+              AppString.addRoom.tr(),
+              style: TextStyle(color: Colors.grey[500], fontSize: 14),
+            ),
+        ],
+      ),
+    ),
+  );
 }

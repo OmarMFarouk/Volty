@@ -1,0 +1,138 @@
+{
+  "schema_version": "3.0.0",
+  "note": "All models use float32 I/O — compatible with tflite_flutter",
+  "models": {
+    "tier_crossing": {
+      "file": "volty_tier_model.tflite",
+      "scaler_file": "volty_tier_scaler.json",
+      "input_shape": [
+        1,
+        17
+      ],
+      "output_shape": [
+        1,
+        1
+      ],
+      "output_type": "sigmoid",
+      "threshold": 0.5,
+      "feature_columns": [
+        "day_of_month",
+        "days_remaining",
+        "month",
+        "current_month_kwh",
+        "projected_month_end_kwh",
+        "daily_kwh_rate",
+        "current_tier_idx",
+        "tier_max_kwh",
+        "distance_to_next_tier",
+        "num_devices",
+        "avg_session_duration_hours",
+        "total_sessions_this_month",
+        "ac_usage_hours",
+        "sim_avg_hourly_kw",
+        "current_bill_egp",
+        "projected_bill_egp",
+        "bill_increase_if_cross_egp"
+      ],
+      "accuracy_pct": 99.02
+    },
+    "anomaly": {
+      "file": "volty_anomaly_model.tflite",
+      "scaler_file": "volty_anomaly_scaler.json",
+      "input_shape": [
+        1,
+        7
+      ],
+      "output_shape": [
+        1,
+        1
+      ],
+      "output_type": "sigmoid",
+      "threshold": 0.45,
+      "feature_columns": [
+        "daily_wh",
+        "month",
+        "day_of_week",
+        "z_score",
+        "ratio_vs_mean",
+        "avg_start_hour",
+        "is_night"
+      ],
+      "accuracy_pct": 100.0
+    },
+    "forecast": {
+      "file": "volty_forecast_model.tflite",
+      "scaler_file": "volty_forecast_scaler.json",
+      "input_shape": [
+        1,
+        7
+      ],
+      "output_shape": [
+        1,
+        1
+      ],
+      "output_type": "regression_egp",
+      "feature_columns": [
+        "daily_kwh_rate",
+        "month",
+        "num_devices",
+        "ac_usage_ratio",
+        "day_of_month",
+        "seasonal_factor",
+        "current_bill_egp"
+      ],
+      "mae_egp": 17.03
+    }
+  },
+  "tiers": [
+    {
+      "idx": 1,
+      "max": 50,
+      "rate": 0.68
+    },
+    {
+      "idx": 2,
+      "max": 100,
+      "rate": 0.78
+    },
+    {
+      "idx": 3,
+      "max": 200,
+      "rate": 0.95
+    },
+    {
+      "idx": 4,
+      "max": 350,
+      "rate": 1.55
+    },
+    {
+      "idx": 5,
+      "max": 650,
+      "rate": 1.95
+    },
+    {
+      "idx": 6,
+      "max": 1000,
+      "rate": 2.1
+    },
+    {
+      "idx": 7,
+      "max": 999999,
+      "rate": 2.23
+    }
+  ],
+  "seasonal_factors": {
+    "1": 0.85,
+    "2": 0.8,
+    "3": 0.9,
+    "4": 1.0,
+    "5": 1.15,
+    "6": 1.3,
+    "7": 1.4,
+    "8": 1.35,
+    "9": 1.2,
+    "10": 1.05,
+    "11": 0.9,
+    "12": 0.85
+  }
+}

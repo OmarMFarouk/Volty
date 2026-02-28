@@ -42,7 +42,7 @@ class MetricsCard extends StatelessWidget {
     Color color,
   ) {
     return Container(
-      padding: const EdgeInsets.all(20),
+      padding: const EdgeInsets.all(15),
       decoration: BoxDecoration(
         color: const Color(0xFF1E2538),
         borderRadius: BorderRadius.circular(20),
@@ -59,7 +59,7 @@ class MetricsCard extends StatelessWidget {
             ),
             child: Icon(icon, color: color, size: 26),
           ),
-          const SizedBox(height: 15),
+          const SizedBox(height: 5),
           Text(
             value,
             style: TextStyle(

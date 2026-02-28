@@ -19,6 +19,9 @@ class AppEndPoints {
   // Dashboard
   static const String showDashboard = '$endPoint/dashboard/show_dashboard.php';
 
+  // AI
+  static const String showFeatures = '$endPoint/ai/show_features.php';
+
   // Analytics
   static const String showAnalytics = '$endPoint/analytics/show_analytics.php';
 

@@ -418,7 +418,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     context,
                   );
                 });
-                setState(() {});
+                AppNavigator.pop(context);
               },
             ),
           ),

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:volty/blocs/ai_bloc/cubit.dart';
 import 'package:volty/blocs/analytics_bloc/cubit.dart';
 import 'package:volty/blocs/dash_bloc/dash_cubit.dart';
 import 'package:volty/blocs/devices_bloc/cubit.dart';
@@ -20,6 +21,7 @@ class AppRoot extends StatelessWidget {
         providers: [
           BlocProvider(create: (context) => AuthCubit()..initCubit()),
           BlocProvider(create: (context) => DashCubit()),
+          BlocProvider(create: (context) => AICubit()),
           BlocProvider(create: (context) => DevicesCubit()),
           BlocProvider(create: (context) => AnalyticsCubit()),
         ],

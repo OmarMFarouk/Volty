@@ -274,7 +274,6 @@ class AnalyticsScreen extends StatelessWidget {
     var tiers = pricing?.tiers ?? [];
     double currentTotal = pricing?.currentTotal ?? 0;
     double previousTotal = pricing?.previousTotal ?? 0;
-    String periodText = model!.consumption!.comparison!.periodText!;
     return Container(
       padding: const EdgeInsets.all(25),
       decoration: BoxDecoration(
@@ -312,7 +311,7 @@ class AnalyticsScreen extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
-                '${AppString.total.tr()} $periodText',
+                '${AppString.total.tr()} : ${AppString.previous} ${cubit.selectedPeriod}',
                 style: TextStyle(color: Colors.grey[400], fontSize: 14),
               ),
               Text(
@@ -450,7 +449,7 @@ class AnalyticsScreen extends StatelessWidget {
               (peak) => _buildPeakTimeItem(
                 peak.timeRange ?? '',
                 peak.level ?? '',
-                peak.avgConsumption ?? 0,
+                (peak.avgConsumption ?? 0) / 1000,
                 _getPeakColor(peak.level ?? ''),
                 context,
               ),

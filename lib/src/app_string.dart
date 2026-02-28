@@ -1,9 +1,18 @@
+// ══════════════════════════════════════════════════════════════════════════════
+// app_string.dart
+//
+// Single source of truth for every localisation key in the app.
+// Keys are grouped by feature. The constant value == the JSON key.
+// ══════════════════════════════════════════════════════════════════════════════
+
+import '../models/ai_model.dart';
+
 class AppString {
-  // App
+  // ── App ──────────────────────────────────────────────────────────────────
   static const String appTitle = 'app_title';
   static const String appShortDesc = 'app_short_desc';
 
-  // Onboarding
+  // ── Onboarding ───────────────────────────────────────────────────────────
   static const String onboardingTitle1 = 'onboarding_title_1';
   static const String onboardingTitle2 = 'onboarding_title_2';
   static const String onboardingTitle3 = 'onboarding_title_3';
@@ -11,7 +20,7 @@ class AppString {
   static const String onboardingDesc2 = 'onboarding_desc_2';
   static const String onboardingDesc3 = 'onboarding_desc_3';
 
-  // Login / Signup / Welcome
+  // ── Auth ─────────────────────────────────────────────────────────────────
   static const String welcomeMsg = 'welcome_msg';
   static const String enter = 'enter';
   static const String welcomeNote1 = 'welcome_note_1';
@@ -31,16 +40,12 @@ class AppString {
   static const String userStepTitle = 'user_step_title';
   static const String userStepMsg = 'user_step_msg';
   static const String userStepInfo = 'user_step_info';
-
   static const String forgot = 'forgot';
   static const String forgotMsg = 'forgot_msg';
   static const String reset = 'reset';
-  static const String warning = 'warning';
-  static const String success = 'success';
-  static const String refresh = 'refresh';
   static const String rememberMe = 'remember_me';
 
-  // Signup Form
+  // ── Form ─────────────────────────────────────────────────────────────────
   static const String basicInfo = 'basic_info';
   static const String contactInfo = 'contact_info';
   static const String securitySettings = 'security_settings';
@@ -51,7 +56,6 @@ class AppString {
   static const String city = 'city';
   static const String address = 'address';
   static const String confirmPassword = 'confirm_password';
-  static const String previous = 'previous';
   static const String createAccount = 'create_account';
   static const String verifyDataMsg = 'verify_data_msg';
   static const String termsAgreementMsg = 'terms_agreement_msg';
@@ -68,12 +72,12 @@ class AppString {
   static const String passwordUpperCheck = 'pw_upper_check';
   static const String passwordLowerCheck = 'pw_lower_check';
 
-  // Input Fields
+  // ── Input fields ─────────────────────────────────────────────────────────
   static const String email = 'email';
   static const String password = 'password';
   static const String name = 'name';
 
-  // Home
+  // ── Home ─────────────────────────────────────────────────────────────────
   static const String home = 'home';
   static const String welcomeBack = 'welcome_back';
   static const String today = 'today';
@@ -84,7 +88,7 @@ class AppString {
   static const String myHouses = 'my_houses';
   static const String houses = 'houses';
 
-  // Navigation / Settings
+  // ── Navigation / Settings ────────────────────────────────────────────────
   static const String settings = 'settings';
   static const String terms = 'terms';
   static const String policy = 'policy';
@@ -94,14 +98,17 @@ class AppString {
   static const String recent = 'recent';
   static const String empty = 'empty';
 
-  // Messages
+  // ── Generic messages ─────────────────────────────────────────────────────
   static const String fillMsg = 'fill_msg';
   static const String requiredMsg = 'required_msg';
   static const String required = 'required';
   static const String invalidFormat = 'invalid_format';
   static const String sureMsg = 'sure_msg';
+  static const String warning = 'warning';
+  static const String success = 'success';
+  static const String refresh = 'refresh';
 
-  // Days
+  // ── Days ─────────────────────────────────────────────────────────────────
   static const String saturday = 'saturday';
   static const String sunday = 'sunday';
   static const String monday = 'monday';
@@ -115,23 +122,9 @@ class AppString {
   static const String year = 'year';
   static const String recentPeriod = 'recent_period';
 
-  // About
-  static const String aboutTitle = 'about_title';
-  static const String aboutDescription = 'about_description';
-  static const String contactUs = 'contact_us';
-
-  // Account settings
-  static const String changePassword = 'change_password';
-  static const String changeEmail = 'change_email';
-  static const String newEmail = 'new_email';
-  static const String newPassword = 'new_password';
-  static const String currentPassword = 'current_password';
-
-  // Copyright
-  static const String copyright = 'copyright';
-
-  // Actions
+  // ── Actions ──────────────────────────────────────────────────────────────
   static const String next = 'next';
+  static const String previous = 'previous';
   static const String skip = 'skip';
   static const String cancel = 'cancel';
   static const String processing = 'processing';
@@ -146,10 +139,23 @@ class AppString {
   static const String moreThan = 'more_than';
   static const String lessThan = 'less_than';
 
-  // Network
+  // ── Network ──────────────────────────────────────────────────────────────
   static const String checkNetwork = 'check_network';
 
-  // Analytics
+  // ── About ────────────────────────────────────────────────────────────────
+  static const String aboutTitle = 'about_title';
+  static const String aboutDescription = 'about_description';
+  static const String contactUs = 'contact_us';
+
+  // ── Account ──────────────────────────────────────────────────────────────
+  static const String changePassword = 'change_password';
+  static const String changeEmail = 'change_email';
+  static const String newEmail = 'new_email';
+  static const String newPassword = 'new_password';
+  static const String currentPassword = 'current_password';
+  static const String copyright = 'copyright';
+
+  // ── Analytics ────────────────────────────────────────────────────────────
   static const String analytics = 'analytics';
   static const String analyticsTitle = 'analytics_title';
   static const String analyticsSubtitle = 'analytics_subtitle';
@@ -165,7 +171,7 @@ class AppString {
   static const String noData = 'no_data';
   static const String noActiveDevices = 'no_active_devices';
 
-  // Devices
+  // ── Devices ──────────────────────────────────────────────────────────────
   static const String devicesTitle = 'devices_title';
   static const String devicesSubtitle = 'devices_subtitle';
   static const String rooms = 'rooms';
@@ -194,7 +200,7 @@ class AppString {
   static const String showAll = 'show_all';
   static const String weeklyConsumption = 'weekly_consumption';
 
-  // Profile
+  // ── Profile ──────────────────────────────────────────────────────────────
   static const String account = 'account';
   static const String verifiedAccount = 'verified_account';
   static const String daysWithUs = 'days_with_us';
@@ -211,7 +217,7 @@ class AppString {
   static const String shareApp = 'share_app';
   static const String about = 'about';
 
-  // Help Center & Modals (NEW)
+  // ── Help Center ──────────────────────────────────────────────────────────
   static const String faq = 'faq';
   static const String faqTitle = 'faq_title';
   static const String aboutUs = 'about_us';
@@ -228,7 +234,7 @@ class AppString {
   static const String comingSoon = 'coming_soon';
   static const String learnMoreAbout = 'learn_more_about';
 
-  // About Us Content (NEW)
+  // ── About Us ─────────────────────────────────────────────────────────────
   static const String aboutVoltyTitle = 'about_volty_title';
   static const String aboutVoltySubtitle = 'about_volty_subtitle';
   static const String aboutVoltyDesc = 'about_volty_desc';
@@ -237,13 +243,9 @@ class AppString {
   static const String companyDescription = 'company_description';
   static const String location = 'location';
   static const String locationValue = 'location_value';
-
-  // Stats (NEW)
   static const String egyptianHomes = 'egyptian_homes';
   static const String avgSavings = 'avg_savings';
   static const String monitoring247 = 'monitoring_24_7';
-
-  // Features (NEW)
   static const String realtimeMonitoring = 'realtime_monitoring';
   static const String smartDeviceControl = 'smart_device_control';
   static const String detailedAnalytics = 'detailed_analytics';
@@ -253,7 +255,7 @@ class AppString {
   static const String smartScheduling = 'smart_scheduling';
   static const String instantAlerts = 'instant_alerts';
 
-  // FAQ Questions & Answers (NEW)
+  // ── FAQ ──────────────────────────────────────────────────────────────────
   static const String faqQ1 = 'faq_q1';
   static const String faqA1 = 'faq_a1';
   static const String faqQ2 = 'faq_q2';
@@ -279,6 +281,173 @@ class AppString {
   static const String faqQ12 = 'faq_q12';
   static const String faqA12 = 'faq_a12';
 
-  // Miscellaneous
+  // ══════════════════════════════════════════════════════════════════════════
+  // AI SCREEN — UI labels
+  // ══════════════════════════════════════════════════════════════════════════
+
+  static const String aiCenter = 'ai_center';
+  static const String aiSubtitle = 'ai_subtitle';
+  static const String aiAnalyzing = 'ai_analyzing';
+  static const String aiLocalModels = 'ai_local_models';
+  static const String quickInsights = 'quick_insights';
+  static const String vsLastMonth = 'vs_last_month';
+  static const String bestUsageHours = 'best_usage_hours';
+  static const String topDeviceLabel = 'top_device_label';
+  static const String carbonFootprint = 'carbon_footprint';
+  static const String noDeviceDetected =
+      'no_device_detected'; // "None detected"
+  static const String trendUp = 'trend_up'; // "Up {n}%"
+  static const String trendDown = 'trend_down'; // "Down {n}%"
+  static const String peakHoursRange = 'peak_hours_range'; // "22:00 – 06:00"
+  static const String kgCo2 = 'kg_co2'; // "{n} kg CO₂"
+  static const String basedOn90d = 'based_on_90d';
+  static const String accuracyPct = 'accuracy_pct'; // "{n}% accuracy"
+  static const String warningTier = 'warning_tier';
+  static const String onTrack = 'on_track';
+  static const String projectedKwh = 'projected_kwh';
+  static const String projectedBill = 'projected_bill';
+  static const String potentialSavings = 'potential_savings';
+  static const String savingPlan = 'saving_plan';
+  static const String viewDetails = 'view_details';
+  static const String kwh = 'kwh';
+  static const String egp = 'egp';
+  static const String tierAnalysis = 'tier_analysis';
+  static const String tierSafe = 'tier_safe';
+  static const String tierDanger = 'tier_danger';
+  static const String currentTier = 'current_tier'; // "Current tier {n}"
+  static const String daysLeft = 'days_left';
+  static const String projectedLabel =
+      'projected_label'; // "Projected: {n} kWh"
+  static const String exceedsBy = 'exceeds_by'; // "Exceeds by {n} kWh!"
+  static const String remainingKwh = 'remaining_kwh'; // "{n} kWh remaining"
+  static const String tierTip = 'tier_tip';
+  static const String smartSchedule = 'smart_schedule';
+  static const String smartScheduleSub = 'smart_schedule_sub';
+  static const String scheduleReasonPeak =
+      'schedule_reason_peak'; // "Running during peak hours"
+  static const String noPeakDevices = 'no_peak_devices';
+  static const String applySchedule = 'apply_schedule';
+  static const String saveEgp = 'save_egp'; // "Save {n} EGP"
+  static const String anomalyDetection = 'anomaly_detection';
+  static const String anomalySub = 'anomaly_sub';
+  static const String noAnomalies = 'no_anomalies';
+  static const String detectedAt = 'detected_at'; // "Detected on {date}"
+  static const String severityHigh = 'severity_high';
+  static const String severityMedium = 'severity_medium';
+  static const String severityLow = 'severity_low';
+  static const String costForecast = 'cost_forecast';
+  static const String costForecastSub = 'cost_forecast_sub';
+  static const String noForecastData = 'no_forecast_data';
+  static const String summerWarning = 'summer_warning';
+  static const String behaviorProfile = 'behavior_profile';
+  static const String behaviorSub = 'behavior_sub';
+  static const String usagePattern = 'usage_pattern';
+  static const String peakDay = 'peak_day';
+  static const String efficiencyScore = 'efficiency_score';
+  static const String homeRating = 'home_rating';
+  static const String achievementClose = 'achievement_close';
+  static const String achievementSub = 'achievement_sub';
+  static const String aiRecSub = 'ai_rec_sub';
+  static const String noRecommendations = 'no_recommendations';
+  static const String impactLabel = 'impact_label';
+
+  // ── Month names (used by widget via monthKey helper) ─────────────────────
+  static const String monthJan = 'month_jan';
+  static const String monthFeb = 'month_feb';
+  static const String monthMar = 'month_mar';
+  static const String monthApr = 'month_apr';
+  static const String monthMay = 'month_may';
+  static const String monthJun = 'month_jun';
+  static const String monthJul = 'month_jul';
+  static const String monthAug = 'month_aug';
+  static const String monthSep = 'month_sep';
+  static const String monthOct = 'month_oct';
+  static const String monthNov = 'month_nov';
+  static const String monthDec = 'month_dec';
+
+  /// Returns the AppString key for month number 1–12.
+  /// Usage: AppString.monthKey(forecast.monthNumber).tr()
+  static String monthKey(int m) {
+    const _keys = [
+      '',
+      monthJan,
+      monthFeb,
+      monthMar,
+      monthApr,
+      monthMay,
+      monthJun,
+      monthJul,
+      monthAug,
+      monthSep,
+      monthOct,
+      monthNov,
+      monthDec,
+    ];
+    return _keys[m.clamp(1, 12)];
+  }
+
+  // ── Usage patterns (enum → key) ──────────────────────────────────────────
+  static const String patternMorning = 'pattern_morning';
+  static const String patternAfternoon = 'pattern_afternoon';
+  static const String patternEvening = 'pattern_evening';
+  static const String patternNight = 'pattern_night';
+
+  /// Returns the AppString key for a [UsagePattern] enum value.
+  /// Usage: AppString.patternKey(profile.usagePattern).tr()
+  static String patternKey(UsagePattern p) {
+    switch (p) {
+      case UsagePattern.morning:
+        return patternMorning;
+      case UsagePattern.afternoon:
+        return patternAfternoon;
+      case UsagePattern.evening:
+        return patternEvening;
+      case UsagePattern.night:
+        return patternNight;
+    }
+  }
+
+  // ── Anomaly title / description keys ─────────────────────────────────────
+  // The cubit maps raw inference labels → these keys.
+  // Widget calls: anomalyItem.titleKey.tr()
+  static const String anomalyNightTitle = 'anomaly_night_title';
+  static const String anomalyNightDesc = 'anomaly_night_desc';
+  static const String anomalySpikeTitle = 'anomaly_spike_title';
+  static const String anomalySpikeDesc = 'anomaly_spike_desc';
+  static const String anomalyIdleTitle = 'anomaly_idle_title';
+  static const String anomalyIdleDesc = 'anomaly_idle_desc';
+  static const String anomalyGenericTitle = 'anomaly_generic_title';
+  static const String anomalyGenericDesc = 'anomaly_generic_desc';
+
+  // ── Cubit API messages ───────────────────────────────────────────────────
+  static const String aiErrorNetwork =
+      'ai_error_network'; // "Check your connection"
+  static const String aiErrorGeneric =
+      'ai_error_generic'; // "Something went wrong: {error}"
+  static const String aiSuccessLoad = 'ai_success_load'; // "Insights loaded"
+
+  // ── Recommendation title / savings keys ──────────────────────────────────
+  // titleArgs / savingsArgs are passed as namedArgs to .tr().
+  static const String recAcReduceTitle =
+      'rec_ac_reduce_title'; // "Reduce AC by {n} kWh"
+  static const String recSavingsEgp =
+      'rec_savings_egp'; // "Save {n} EGP/month" (shared)
+  static const String recAcTempTitle = 'rec_ac_temp_title'; // "Set AC to 24°C"
+  static const String recAcTempSavings =
+      'rec_ac_temp_savings'; // "Save 85 EGP/month"
+  static const String recHeaterTitle =
+      'rec_heater_title'; // "Schedule heater after 22:00"
+  static const String recHeaterSavings =
+      'rec_heater_savings'; // "Save 62 EGP/month"
+  static const String recLightingTitle =
+      'rec_lighting_title'; // "Smart lighting sensors"
+  static const String recLightingSavings =
+      'rec_lighting_savings'; // "Save 28 EGP/month"
+  static const String recStandbyTitle =
+      'rec_standby_title'; // "Unplug standby devices"
+  static const String recStandbySavings =
+      'rec_standby_savings'; // "Save 15 EGP/month"
+
+  // ── Misc ─────────────────────────────────────────────────────────────────
   static const String and = 'and';
 }
